@@ -39,11 +39,15 @@
         .metric-icon { font-size: 1.5rem; margin-bottom: 8px; }
         .metric-value { font-size: 1.75rem; font-weight: bold; color: #1f2937; margin-bottom: 4px; }
         .metric-label { font-size: 0.75rem; color: #6b7280; }
-        .bars-container { display: flex; gap: 8px; align-items: flex-end; height: 200px; margin-top: 20px; position: relative; padding-bottom: 50px; }
+        .bars-container { display: flex; gap: 12px; align-items: flex-end; height: 250px; margin-top: 20px; position: relative; padding-bottom: 50px; }
         .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; }
-        .bar { width: 100%; border-radius: 4px 4px 0 0; transition: all 0.3s; }
-        .bar:hover { opacity: 0.8; }
+        .bar-stack { display: flex; gap: 3px; align-items: flex-end; width: 100%; justify-content: center; height: 180px; }
+        .bar { width: 18px; border-radius: 4px 4px 0 0; transition: all 0.3s; cursor: pointer; }
+        .bar:hover { opacity: 0.8; transform: translateY(-2px); }
         .bar-label { font-size: 0.75rem; color: #6b7280; margin-top: 8px; text-align: center; }
+        .chart-legend { position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: center; gap: 20px; font-size: 0.875rem; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-color { width: 14px; height: 14px; border-radius: 3px; }
         .pie-container { display: flex; justify-content: center; align-items: center; margin: 20px 0; }
     </style>
 </head>
@@ -234,29 +238,33 @@
             });
             
             const dates = Object.keys(daily).sort().slice(-7);
-            const maxValue = Math.max(...dates.map(d => Math.max(daily[d].calls, daily[d].candidates, daily[d].interviews, daily[d].placements * 20)));
+            const maxValue = Math.max(...dates.flatMap(d => [daily[d].calls, daily[d].candidates, daily[d].interviews, daily[d].placements * 15]));
             
-            return dates.map(date => {
+            const bars = dates.map(date => {
                 const d = daily[date];
                 return `
                 <div class="bar-group">
-                    <div style="display: flex; gap: 2px; align-items: flex-end; height: 180px;">
+                    <div class="bar-stack">
                         <div class="bar" style="height: ${(d.calls / maxValue * 180)}px; background: #3b82f6;" title="Calls: ${d.calls}"></div>
                         <div class="bar" style="height: ${(d.candidates / maxValue * 180)}px; background: #10b981;" title="Candidates: ${d.candidates}"></div>
                         <div class="bar" style="height: ${(d.interviews / maxValue * 180)}px; background: #f59e0b;" title="Interviews: ${d.interviews}"></div>
-                        <div class="bar" style="height: ${(d.placements * 20 / maxValue * 180)}px; background: #ef4444;" title="Placements: ${d.placements}"></div>
+                        <div class="bar" style="height: ${(d.placements * 15 / maxValue * 180)}px; background: #ef4444;" title="Placements: ${d.placements}"></div>
                     </div>
-                    <div class="bar-label">${date.slice(-2)}</div>
+                    <div class="bar-label">${date.slice(8, 10)}/${date.slice(5, 7)}</div>
                 </div>
             `;
-            }).join('') + `
-                <div style="position: absolute; bottom: -40px; left: 0; right: 0; display: flex; justify-content: center; gap: 20px; font-size: 0.875rem;">
-                    <div><span style="display: inline-block; width: 12px; height: 12px; background: #3b82f6; border-radius: 2px;"></span> Calls</div>
-                    <div><span style="display: inline-block; width: 12px; height: 12px; background: #10b981; border-radius: 2px;"></span> Candidates</div>
-                    <div><span style="display: inline-block; width: 12px; height: 12px; background: #f59e0b; border-radius: 2px;"></span> Interviews</div>
-                    <div><span style="display: inline-block; width: 12px; height: 12px; background: #ef4444; border-radius: 2px;"></span> Placements</div>
+            }).join('');
+            
+            const legend = `
+                <div class="chart-legend">
+                    <div class="legend-item"><div class="legend-color" style="background: #3b82f6;"></div><span>Calls</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: #10b981;"></div><span>Candidates Sent</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: #f59e0b;"></div><span>Interviews</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div><span>Placements (×15)</span></div>
                 </div>
             `;
+            
+            return bars + legend;
         }
 
         function renderFunnel(metrics) {
