@@ -14,7 +14,10 @@
         .filter-group label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 8px; }
         .filter-group select { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; }
         .section-title { font-size: 1.5rem; font-weight: bold; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        .leaderboards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .leaderboards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 40px; }
+        @media (max-width: 1400px) { .leaderboards { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 900px) { .leaderboards { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .leaderboards { grid-template-columns: 1fr; } }
         .leaderboard-card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; border-top: 4px solid; }
         .leaderboard-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
         .leaderboard-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
@@ -36,7 +39,7 @@
         .metric-icon { font-size: 1.5rem; margin-bottom: 8px; }
         .metric-value { font-size: 1.75rem; font-weight: bold; color: #1f2937; margin-bottom: 4px; }
         .metric-label { font-size: 0.75rem; color: #6b7280; }
-        .bars-container { display: flex; gap: 8px; align-items: flex-end; height: 200px; margin-top: 20px; }
+        .bars-container { display: flex; gap: 8px; align-items: flex-end; height: 200px; margin-top: 20px; position: relative; padding-bottom: 50px; }
         .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; }
         .bar { width: 100%; border-radius: 4px 4px 0 0; transition: all 0.3s; }
         .bar:hover { opacity: 0.8; }
@@ -231,36 +234,57 @@
             });
             
             const dates = Object.keys(daily).sort().slice(-7);
-            const maxValue = Math.max(...dates.map(d => Math.max(daily[d].calls, daily[d].candidates, daily[d].interviews, daily[d].placements * 10)));
+            const maxValue = Math.max(...dates.map(d => Math.max(daily[d].calls, daily[d].candidates, daily[d].interviews, daily[d].placements * 20)));
             
-            return dates.map(date => `
+            return dates.map(date => {
+                const d = daily[date];
+                return `
                 <div class="bar-group">
-                    <div class="bar" style="height: ${(daily[date].calls / maxValue * 180)}px; background: #3b82f6;"></div>
+                    <div style="display: flex; gap: 2px; align-items: flex-end; height: 180px;">
+                        <div class="bar" style="height: ${(d.calls / maxValue * 180)}px; background: #3b82f6;" title="Calls: ${d.calls}"></div>
+                        <div class="bar" style="height: ${(d.candidates / maxValue * 180)}px; background: #10b981;" title="Candidates: ${d.candidates}"></div>
+                        <div class="bar" style="height: ${(d.interviews / maxValue * 180)}px; background: #f59e0b;" title="Interviews: ${d.interviews}"></div>
+                        <div class="bar" style="height: ${(d.placements * 20 / maxValue * 180)}px; background: #ef4444;" title="Placements: ${d.placements}"></div>
+                    </div>
                     <div class="bar-label">${date.slice(-2)}</div>
                 </div>
-            `).join('');
+            `;
+            }).join('') + `
+                <div style="position: absolute; bottom: -40px; left: 0; right: 0; display: flex; justify-content: center; gap: 20px; font-size: 0.875rem;">
+                    <div><span style="display: inline-block; width: 12px; height: 12px; background: #3b82f6; border-radius: 2px;"></span> Calls</div>
+                    <div><span style="display: inline-block; width: 12px; height: 12px; background: #10b981; border-radius: 2px;"></span> Candidates</div>
+                    <div><span style="display: inline-block; width: 12px; height: 12px; background: #f59e0b; border-radius: 2px;"></span> Interviews</div>
+                    <div><span style="display: inline-block; width: 12px; height: 12px; background: #ef4444; border-radius: 2px;"></span> Placements</div>
+                </div>
+            `;
         }
 
         function renderFunnel(metrics) {
             const stages = [
-                { name: 'Calls', value: metrics.callsMade, color: '#3b82f6' },
-                { name: 'Meetings', value: metrics.clientMeetingsBooked, color: '#10b981', rate: metrics.callsMade ? (metrics.clientMeetingsBooked / metrics.callsMade * 100) : 0 },
-                { name: 'Terms Sent', value: metrics.termsSent, color: '#f59e0b', rate: metrics.clientMeetingsBooked ? (metrics.termsSent / metrics.clientMeetingsBooked * 100) : 0 },
-                { name: 'Terms Signed', value: metrics.termsSigned, color: '#ef4444', rate: metrics.termsSent ? (metrics.termsSigned / metrics.termsSent * 100) : 0 },
-                { name: 'Interviews', value: metrics.interviewBooked, color: '#8b5cf6', rate: metrics.candidatesMarketedOut ? (metrics.interviewBooked / metrics.candidatesMarketedOut * 100) : 0 },
-                { name: 'Offers', value: metrics.offerMade, color: '#ec4899', rate: metrics.interviewBooked ? (metrics.offerMade / metrics.interviewBooked * 100) : 0 },
-                { name: 'Placements', value: metrics.placementsMade, color: '#06b6d4', rate: metrics.offerMade ? (metrics.placementsMade / metrics.offerMade * 100) : 0 }
+                { name: 'Calls', value: metrics.callsMade, color: '#3b82f6', nextValue: metrics.clientMeetingsBooked },
+                { name: 'Meetings', value: metrics.clientMeetingsBooked, color: '#10b981', nextValue: metrics.termsSent },
+                { name: 'Terms Sent', value: metrics.termsSent, color: '#f59e0b', nextValue: metrics.termsSigned },
+                { name: 'Terms Signed', value: metrics.termsSigned, color: '#ef4444', nextValue: metrics.interviewBooked },
+                { name: 'Interviews', value: metrics.interviewBooked, color: '#8b5cf6', nextValue: metrics.offerMade },
+                { name: 'Offers', value: metrics.offerMade, color: '#ec4899', nextValue: metrics.placementsMade },
+                { name: 'Placements', value: metrics.placementsMade, color: '#06b6d4', nextValue: null }
             ];
             
-            return stages.map((stage, i) => `
+            return stages.map((stage, i) => {
+                const conversionRate = stage.value > 0 && stage.nextValue !== null 
+                    ? (stage.nextValue / stage.value * 100).toFixed(1) 
+                    : null;
+                    
+                return `
                 <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
                     <div class="funnel-stage" style="width: ${100 - i * 12}%; background: ${stage.color};">
                         <span>${stage.name}</span>
                         <span>${stage.value}</span>
                     </div>
-                    ${i < stages.length - 1 ? `<div class="conversion-rate">↓ ${stage.rate ? stage.rate.toFixed(1) : 0}% conversion</div>` : ''}
+                    ${conversionRate !== null ? `<div class="conversion-rate">↓ ${conversionRate}% conversion</div>` : ''}
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         function drawPieChart(data) {
