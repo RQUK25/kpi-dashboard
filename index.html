@@ -4,533 +4,343 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recruitment KPI Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/recharts@2.5.0/dist/Recharts.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { font-size: 2.5rem; color: #1f2937; margin-bottom: 10px; }
+        .subtitle { color: #6b7280; margin-bottom: 30px; }
+        .filters { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .filter-group label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 8px; }
+        .filter-group select { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; }
+        .section-title { font-size: 1.5rem; font-weight: bold; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .leaderboards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .leaderboard-card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; border-top: 4px solid; }
+        .leaderboard-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .leaderboard-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .leaderboard-title { font-size: 1.125rem; font-weight: bold; color: #1f2937; }
+        .leaderboard-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #e5e7eb; transition: all 0.2s; }
+        .leaderboard-item:hover { box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .leaderboard-item.first { border: 2px solid; }
+        .rank-badge { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 0.875rem; }
+        .leaderboard-name { flex: 1; font-weight: 600; color: #1f2937; }
+        .leaderboard-value { font-size: 1.125rem; font-weight: bold; }
+        .chart-container { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 30px; }
+        .chart-title { font-size: 1.25rem; font-weight: bold; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .funnel { display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
+        .funnel-stage { border-radius: 8px; color: white; font-weight: bold; padding: 16px 32px; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
+        .funnel-stage:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.2); transform: translateY(-2px); }
+        .conversion-rate { font-size: 0.875rem; font-weight: 600; color: #6b7280; margin: 4px 0 12px 0; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 30px; }
+        .metric-tile { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; text-align: center; }
+        .metric-icon { font-size: 1.5rem; margin-bottom: 8px; }
+        .metric-value { font-size: 1.75rem; font-weight: bold; color: #1f2937; margin-bottom: 4px; }
+        .metric-label { font-size: 0.75rem; color: #6b7280; }
+        .bars-container { display: flex; gap: 8px; align-items: flex-end; height: 200px; margin-top: 20px; }
+        .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; }
+        .bar { width: 100%; border-radius: 4px 4px 0 0; transition: all 0.3s; }
+        .bar:hover { opacity: 0.8; }
+        .bar-label { font-size: 0.75rem; color: #6b7280; margin-top: 8px; text-align: center; }
+        .pie-container { display: flex; justify-content: center; align-items: center; margin: 20px 0; }
+    </style>
 </head>
 <body>
-    <div id="root"></div>
-    
-    <script type="text/babel">
-        const { useState, useMemo } = React;
-        const { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
+    <div class="container">
+        <h1>Recruitment KPI Dashboard</h1>
+        <p class="subtitle">Track your team's performance and celebrate wins</p>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label>Period Type</label>
+                <select id="periodType" onchange="updateDashboard()">
+                    <option value="week">Week</option>
+                    <option value="month">Month</option>
+                    <option value="ytd">YTD</option>
+                </select>
+            </div>
+            <div class="filter-group" id="weekFilter">
+                <label>Select Week</label>
+                <select id="weekSelect" onchange="updateDashboard()">
+                    <option>Week 1</option>
+                    <option>Week 2</option>
+                    <option>Week 3</option>
+                    <option selected>Week 4</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Team Member</label>
+                <select id="userSelect" onchange="updateDashboard()">
+                    <option>All Team</option>
+                    <option>Ben</option>
+                    <option>Millie</option>
+                    <option>Jake</option>
+                </select>
+            </div>
+        </div>
 
-        // Icons as SVG components
-        const Trophy = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
-                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
-                <path d="M4 22h16"></path>
-                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
-                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
-                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
-            </svg>
-        );
+        <div class="section-title">🏆 Leaderboards</div>
+        <div class="leaderboards" id="leaderboards"></div>
 
-        const Pound = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <path d="M18 7c0-5.333-8-5.333-8 0"></path>
-                <path d="M10 7v14"></path>
-                <path d="M6 21h12"></path>
-                <path d="M6 13h10"></path>
-            </svg>
-        );
+        <div class="chart-container">
+            <div class="chart-title">📅 Daily Activity Trends</div>
+            <div class="bars-container" id="activityChart"></div>
+        </div>
 
-        const Phone = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-            </svg>
-        );
+        <div class="chart-container">
+            <div class="chart-title">🔄 Conversion Funnel</div>
+            <div class="funnel" id="funnelChart"></div>
+        </div>
 
-        const Target = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <circle cx="12" cy="12" r="6"></circle>
-                <circle cx="12" cy="12" r="2"></circle>
-            </svg>
-        );
+        <div class="chart-container">
+            <div class="chart-title">💼 Top Clients by Revenue</div>
+            <div class="pie-container">
+                <canvas id="pieChart" width="400" height="400"></canvas>
+            </div>
+        </div>
 
-        const Send = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-        );
+        <div class="metrics-grid" id="topMetrics"></div>
+        <div class="metrics-grid" id="bottomMetrics"></div>
+    </div>
 
-        const Calendar = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-        );
+    <script>
+        // Generate sample data
+        function generateData() {
+            const users = ['Ben', 'Millie', 'Jake'];
+            const data = [];
+            for (let week = 1; week <= 4; week++) {
+                for (let day = 1; day <= 7; day++) {
+                    users.forEach(user => {
+                        data.push({
+                            date: `2025-10-${String((week - 1) * 7 + day).padStart(2, '0')}`,
+                            week: `Week ${week}`,
+                            user: user,
+                            callsMade: Math.floor(Math.random() * 20) + 5,
+                            clientMeetingsBooked: Math.floor(Math.random() * 5),
+                            termsSent: Math.floor(Math.random() * 3),
+                            termsSigned: Math.floor(Math.random() * 2),
+                            jobAdvertPlaced: Math.floor(Math.random() * 2),
+                            candidateRegistered: Math.floor(Math.random() * 4),
+                            candidatesMarketedOut: Math.floor(Math.random() * 8),
+                            interviewBooked: Math.floor(Math.random() * 3),
+                            offerMade: Math.floor(Math.random() * 2),
+                            placementsMade: Math.random() > 0.85 ? 1 : 0,
+                            placementValue: Math.random() > 0.85 ? Math.floor(Math.random() * 8000) + 3000 : 0,
+                            placementClient: Math.random() > 0.85 ? ['Tech Corp', 'Finance Ltd', 'Healthcare Inc', 'Retail Co'][Math.floor(Math.random() * 4)] : ''
+                        });
+                    });
+                }
+            }
+            return data;
+        }
 
-        const CheckCircle = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-        );
+        let allData = generateData();
 
-        const FileText = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-                <polyline points="10 9 9 9 8 9"></polyline>
-            </svg>
-        );
-
-        const UserPlus = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="8.5" cy="7" r="4"></circle>
-                <line x1="20" y1="8" x2="20" y2="14"></line>
-                <line x1="23" y1="11" x2="17" y2="11"></line>
-            </svg>
-        );
-
-        const Briefcase = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-            </svg>
-        );
-
-        const TrendingUp = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                <polyline points="17 6 23 6 23 12"></polyline>
-            </svg>
-        );
-
-        const Award = ({ size = 24, color = "currentColor" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-                <circle cx="12" cy="8" r="7"></circle>
-                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-            </svg>
-        );
-
-        const generateSampleData = () => {
-          const users = ['Ben', 'Millie', 'Jake'];
-          const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-          const data = [];
-          
-          weeks.forEach((week, weekIndex) => {
-            users.forEach(user => {
-              for (let day = 1; day <= 7; day++) {
-                data.push({
-                  date: `2025-10-${String((weekIndex * 7) + day).padStart(2, '0')}`,
-                  week: week,
-                  month: 'October',
-                  user: user,
-                  callsMade: Math.floor(Math.random() * 20) + 5,
-                  clientMeetingsBooked: Math.floor(Math.random() * 5),
-                  termsSent: Math.floor(Math.random() * 3),
-                  termsSigned: Math.floor(Math.random() * 2),
-                  roleGiven: Math.floor(Math.random() * 2),
-                  jobAdvertPlaced: Math.floor(Math.random() * 2),
-                  candidateRegistered: Math.floor(Math.random() * 4),
-                  candidatesMarketedOut: Math.floor(Math.random() * 8),
-                  interviewBooked: Math.floor(Math.random() * 3),
-                  offerMade: Math.floor(Math.random() * 2),
-                  placementsMade: Math.random() > 0.85 ? 1 : 0,
-                  placementValue: Math.random() > 0.85 ? Math.floor(Math.random() * 8000) + 3000 : 0,
-                  placementClient: Math.random() > 0.85 ? ['Tech Corp', 'Finance Ltd', 'Healthcare Inc', 'Retail Co'][Math.floor(Math.random() * 4)] : ''
-                });
-              }
+        function filterData() {
+            const periodType = document.getElementById('periodType').value;
+            const week = document.getElementById('weekSelect').value;
+            const user = document.getElementById('userSelect').value;
+            
+            return allData.filter(d => {
+                const periodMatch = periodType === 'week' ? d.week === week : true;
+                const userMatch = user === 'All Team' || d.user === user;
+                return periodMatch && userMatch;
             });
-          });
-          
-          return data;
-        };
+        }
 
-        const Dashboard = () => {
-          const [data] = useState(generateSampleData());
-          const [selectedPeriod, setSelectedPeriod] = useState('Week 4');
-          const [periodType, setPeriodType] = useState('week');
-          const [selectedUser, setSelectedUser] = useState('All Team');
-          
-          const users = ['All Team', ...Array.from(new Set(data.map(d => d.user)))];
-          
-          const filteredData = useMemo(() => {
-            return data.filter(d => {
-              const periodMatch = periodType === 'week' 
-                ? d.week === selectedPeriod 
-                : periodType === 'month'
-                ? d.month === selectedPeriod
-                : true;
-              const userMatch = selectedUser === 'All Team' || d.user === selectedUser;
-              return periodMatch && userMatch;
-            });
-          }, [data, selectedPeriod, periodType, selectedUser]);
-          
-          const metrics = useMemo(() => {
-            const aggregated = filteredData.reduce((acc, row) => ({
-              callsMade: acc.callsMade + row.callsMade,
-              clientMeetingsBooked: acc.clientMeetingsBooked + row.clientMeetingsBooked,
-              termsSent: acc.termsSent + row.termsSent,
-              termsSigned: acc.termsSigned + row.termsSigned,
-              roleGiven: acc.roleGiven + row.roleGiven,
-              jobAdvertPlaced: acc.jobAdvertPlaced + row.jobAdvertPlaced,
-              candidateRegistered: acc.candidateRegistered + row.candidateRegistered,
-              candidatesMarketedOut: acc.candidatesMarketedOut + row.candidatesMarketedOut,
-              interviewBooked: acc.interviewBooked + row.interviewBooked,
-              offerMade: acc.offerMade + row.offerMade,
-              placementsMade: acc.placementsMade + row.placementsMade,
-              totalBillings: acc.totalBillings + row.placementValue
+        function aggregateMetrics(data) {
+            return data.reduce((acc, row) => ({
+                callsMade: acc.callsMade + row.callsMade,
+                clientMeetingsBooked: acc.clientMeetingsBooked + row.clientMeetingsBooked,
+                termsSent: acc.termsSent + row.termsSent,
+                termsSigned: acc.termsSigned + row.termsSigned,
+                jobAdvertPlaced: acc.jobAdvertPlaced + row.jobAdvertPlaced,
+                candidateRegistered: acc.candidateRegistered + row.candidateRegistered,
+                candidatesMarketedOut: acc.candidatesMarketedOut + row.candidatesMarketedOut,
+                interviewBooked: acc.interviewBooked + row.interviewBooked,
+                offerMade: acc.offerMade + row.offerMade,
+                placementsMade: acc.placementsMade + row.placementsMade,
+                totalBillings: acc.totalBillings + row.placementValue
             }), {
-              callsMade: 0,
-              clientMeetingsBooked: 0,
-              termsSent: 0,
-              termsSigned: 0,
-              roleGiven: 0,
-              jobAdvertPlaced: 0,
-              candidateRegistered: 0,
-              candidatesMarketedOut: 0,
-              interviewBooked: 0,
-              offerMade: 0,
-              placementsMade: 0,
-              totalBillings: 0
+                callsMade: 0, clientMeetingsBooked: 0, termsSent: 0, termsSigned: 0,
+                jobAdvertPlaced: 0, candidateRegistered: 0, candidatesMarketedOut: 0,
+                interviewBooked: 0, offerMade: 0, placementsMade: 0, totalBillings: 0
             });
-            
-            return aggregated;
-          }, [filteredData]);
-          
-          const leaderboards = useMemo(() => {
+        }
+
+        function calculateLeaderboards(data) {
             const userStats = {};
-            
-            filteredData.forEach(row => {
-              if (!userStats[row.user]) {
-                userStats[row.user] = {
-                  user: row.user,
-                  placementsMade: 0,
-                  totalBillings: 0,
-                  callsMade: 0,
-                  candidatesMarketedOut: 0,
-                  interviewBooked: 0
-                };
-              }
-              
-              userStats[row.user].placementsMade += row.placementsMade;
-              userStats[row.user].totalBillings += row.placementValue;
-              userStats[row.user].callsMade += row.callsMade;
-              userStats[row.user].candidatesMarketedOut += row.candidatesMarketedOut;
-              userStats[row.user].interviewBooked += row.interviewBooked;
+            data.forEach(row => {
+                if (!userStats[row.user]) {
+                    userStats[row.user] = {
+                        user: row.user,
+                        placementsMade: 0,
+                        totalBillings: 0,
+                        callsMade: 0,
+                        candidatesMarketedOut: 0,
+                        interviewBooked: 0
+                    };
+                }
+                userStats[row.user].placementsMade += row.placementsMade;
+                userStats[row.user].totalBillings += row.placementValue;
+                userStats[row.user].callsMade += row.callsMade;
+                userStats[row.user].candidatesMarketedOut += row.candidatesMarketedOut;
+                userStats[row.user].interviewBooked += row.interviewBooked;
             });
             
             const users = Object.values(userStats);
-            
             return {
-              placements: [...users].sort((a, b) => b.placementsMade - a.placementsMade),
-              billings: [...users].sort((a, b) => b.totalBillings - a.totalBillings),
-              calls: [...users].sort((a, b) => b.callsMade - a.callsMade),
-              candidates: [...users].sort((a, b) => b.candidatesMarketedOut - a.candidatesMarketedOut),
-              interviews: [...users].sort((a, b) => b.interviewBooked - a.interviewBooked)
+                placements: [...users].sort((a, b) => b.placementsMade - a.placementsMade),
+                billings: [...users].sort((a, b) => b.totalBillings - a.totalBillings),
+                calls: [...users].sort((a, b) => b.callsMade - a.callsMade),
+                candidates: [...users].sort((a, b) => b.candidatesMarketedOut - a.candidatesMarketedOut),
+                interviews: [...users].sort((a, b) => b.interviewBooked - a.interviewBooked)
             };
-          }, [filteredData]);
-          
-          const conversionRates = useMemo(() => {
-            return [
-              { stage: 'Calls', value: metrics.callsMade },
-              { stage: 'Meetings', value: metrics.clientMeetingsBooked, rate: metrics.callsMade ? (metrics.clientMeetingsBooked / metrics.callsMade * 100) : 0 },
-              { stage: 'Terms Sent', value: metrics.termsSent, rate: metrics.clientMeetingsBooked ? (metrics.termsSent / metrics.clientMeetingsBooked * 100) : 0 },
-              { stage: 'Terms Signed', value: metrics.termsSigned, rate: metrics.termsSent ? (metrics.termsSigned / metrics.termsSent * 100) : 0 },
-              { stage: 'Interviews', value: metrics.interviewBooked, rate: metrics.candidatesMarketedOut ? (metrics.interviewBooked / metrics.candidatesMarketedOut * 100) : 0 },
-              { stage: 'Offers', value: metrics.offerMade, rate: metrics.interviewBooked ? (metrics.offerMade / metrics.interviewBooked * 100) : 0 },
-              { stage: 'Placements', value: metrics.placementsMade, rate: metrics.offerMade ? (metrics.placementsMade / metrics.offerMade * 100) : 0 }
-            ];
-          }, [metrics]);
-          
-          const dailyTrends = useMemo(() => {
+        }
+
+        function renderLeaderboard(title, data, metric, color, prefix = '') {
+            return `
+                <div class="leaderboard-card" style="border-top-color: ${color};">
+                    <div class="leaderboard-header">
+                        <div class="leaderboard-icon" style="background: ${color}20;">${title.split(' ')[0]}</div>
+                        <div class="leaderboard-title">${title}</div>
+                    </div>
+                    ${data.map((user, i) => `
+                        <div class="leaderboard-item ${i === 0 ? 'first' : ''}" style="${i === 0 ? `background: ${color}10; border-color: ${color};` : ''}">
+                            <div class="rank-badge" style="background: ${i === 0 ? color : '#9ca3af'};">${i + 1}</div>
+                            <div class="leaderboard-name">${user.user}</div>
+                            <div class="leaderboard-value" style="color: ${i === 0 ? color : '#374151'};">
+                                ${prefix}${user[metric].toLocaleString()}
+                            </div>
+                            ${i === 0 ? '🏆' : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderActivityChart(data) {
             const daily = {};
-            
-            filteredData.forEach(row => {
-              if (!daily[row.date]) {
-                daily[row.date] = {
-                  date: row.date,
-                  calls: 0,
-                  candidates: 0,
-                  interviews: 0,
-                  placements: 0
-                };
-              }
-              
-              daily[row.date].calls += row.callsMade;
-              daily[row.date].candidates += row.candidatesMarketedOut;
-              daily[row.date].interviews += row.interviewBooked;
-              daily[row.date].placements += row.placementsMade;
+            data.forEach(row => {
+                if (!daily[row.date]) {
+                    daily[row.date] = { calls: 0, candidates: 0, interviews: 0, placements: 0 };
+                }
+                daily[row.date].calls += row.callsMade;
+                daily[row.date].candidates += row.candidatesMarketedOut;
+                daily[row.date].interviews += row.interviewBooked;
+                daily[row.date].placements += row.placementsMade;
             });
             
-            return Object.values(daily).sort((a, b) => a.date.localeCompare(b.date));
-          }, [filteredData]);
-          
-          const topClients = useMemo(() => {
+            const dates = Object.keys(daily).sort().slice(-7);
+            const maxValue = Math.max(...dates.map(d => Math.max(daily[d].calls, daily[d].candidates, daily[d].interviews, daily[d].placements * 10)));
+            
+            return dates.map(date => `
+                <div class="bar-group">
+                    <div class="bar" style="height: ${(daily[date].calls / maxValue * 180)}px; background: #3b82f6;"></div>
+                    <div class="bar-label">${date.slice(-2)}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderFunnel(metrics) {
+            const stages = [
+                { name: 'Calls', value: metrics.callsMade, color: '#3b82f6' },
+                { name: 'Meetings', value: metrics.clientMeetingsBooked, color: '#10b981', rate: metrics.callsMade ? (metrics.clientMeetingsBooked / metrics.callsMade * 100) : 0 },
+                { name: 'Terms Sent', value: metrics.termsSent, color: '#f59e0b', rate: metrics.clientMeetingsBooked ? (metrics.termsSent / metrics.clientMeetingsBooked * 100) : 0 },
+                { name: 'Terms Signed', value: metrics.termsSigned, color: '#ef4444', rate: metrics.termsSent ? (metrics.termsSigned / metrics.termsSent * 100) : 0 },
+                { name: 'Interviews', value: metrics.interviewBooked, color: '#8b5cf6', rate: metrics.candidatesMarketedOut ? (metrics.interviewBooked / metrics.candidatesMarketedOut * 100) : 0 },
+                { name: 'Offers', value: metrics.offerMade, color: '#ec4899', rate: metrics.interviewBooked ? (metrics.offerMade / metrics.interviewBooked * 100) : 0 },
+                { name: 'Placements', value: metrics.placementsMade, color: '#06b6d4', rate: metrics.offerMade ? (metrics.placementsMade / metrics.offerMade * 100) : 0 }
+            ];
+            
+            return stages.map((stage, i) => `
+                <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                    <div class="funnel-stage" style="width: ${100 - i * 12}%; background: ${stage.color};">
+                        <span>${stage.name}</span>
+                        <span>${stage.value}</span>
+                    </div>
+                    ${i < stages.length - 1 ? `<div class="conversion-rate">↓ ${stage.rate ? stage.rate.toFixed(1) : 0}% conversion</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function drawPieChart(data) {
+            const canvas = document.getElementById('pieChart');
+            const ctx = canvas.getContext('2d');
             const clients = {};
             
-            filteredData.forEach(row => {
-              if (row.placementClient && row.placementValue > 0) {
-                if (!clients[row.placementClient]) {
-                  clients[row.placementClient] = {
-                    name: row.placementClient,
-                    value: 0
-                  };
+            data.forEach(row => {
+                if (row.placementClient && row.placementValue > 0) {
+                    clients[row.placementClient] = (clients[row.placementClient] || 0) + row.placementValue;
                 }
-                clients[row.placementClient].value += row.placementValue;
-              }
             });
             
-            const clientArray = Object.values(clients).sort((a, b) => b.value - a.value).slice(0, 5);
-            return clientArray.length > 0 ? clientArray : [
-              { name: 'Tech Corp', value: 25000 },
-              { name: 'Finance Ltd', value: 18000 },
-              { name: 'Healthcare Inc', value: 15000 },
-              { name: 'Retail Co', value: 8000 }
-            ];
-          }, [filteredData]);
-          
-          const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
-          
-          const LeaderboardCard = ({ title, Icon, data, metric, prefix = '', color }) => (
-            <div className="bg-white rounded-lg shadow-lg p-6 border-t-4" style={{ borderTopColor: color }}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 rounded-lg" style={{ backgroundColor: color + '20' }}>
-                  <Icon size={24} color={color} />
-                </div>
-                <h3 className="text-lg font-bold text-gray-800">{title}</h3>
-              </div>
-              <div className="space-y-2">
-                {data.map((user, index) => (
-                  <div 
-                    key={user.user}
-                    className="flex items-center gap-3 p-3 rounded-lg transition-all hover:shadow-md"
-                    style={{
-                      backgroundColor: index === 0 ? color + '10' : '#f9fafb',
-                      border: index === 0 ? `2px solid ${color}` : '1px solid #e5e7eb'
-                    }}
-                  >
-                    <div 
-                      className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white"
-                      style={{ backgroundColor: index === 0 ? color : '#9ca3af' }}
-                    >
-                      {index + 1}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-800">{user.user}</p>
-                    </div>
-                    <div className="font-bold text-lg" style={{ color: index === 0 ? color : '#374151' }}>
-                      {prefix}{typeof user[metric] === 'number' ? user[metric].toLocaleString() : user[metric]}
-                    </div>
-                    {index === 0 && <Trophy size={20} color={color} />}
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-          
-          return (
-            <div className="min-h-screen bg-gray-50 p-6">
-              <div className="max-w-7xl mx-auto">
-                <div className="mb-8">
-                  <h1 className="text-4xl font-bold text-gray-800 mb-2">Recruitment KPI Dashboard</h1>
-                  <p className="text-gray-600">Track your team's performance and celebrate wins</p>
-                </div>
+            const clientData = Object.entries(clients).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            if (clientData.length === 0) {
+                clientData.push(['Tech Corp', 25000], ['Finance Ltd', 18000], ['Healthcare Inc', 15000], ['Retail Co', 8000]);
+            }
+            
+            const total = clientData.reduce((sum, [, val]) => sum + val, 0);
+            const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+            
+            ctx.clearRect(0, 0, 400, 400);
+            let currentAngle = -Math.PI / 2;
+            
+            clientData.forEach(([name, value], i) => {
+                const sliceAngle = (value / total) * 2 * Math.PI;
+                ctx.fillStyle = colors[i];
+                ctx.beginPath();
+                ctx.moveTo(200, 200);
+                ctx.arc(200, 200, 150, currentAngle, currentAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fill();
                 
-                <div className="bg-white rounded-lg shadow p-6 mb-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Period Type</label>
-                      <select 
-                        value={periodType}
-                        onChange={(e) => {
-                          setPeriodType(e.target.value);
-                          if (e.target.value === 'week') setSelectedPeriod('Week 4');
-                          else if (e.target.value === 'month') setSelectedPeriod('October');
-                          else setSelectedPeriod('YTD');
-                        }}
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
-                      >
-                        <option value="week">Week</option>
-                        <option value="month">Month</option>
-                        <option value="ytd">YTD</option>
-                      </select>
-                    </div>
-                    
-                    {periodType === 'week' && (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Select Week</label>
-                        <select 
-                          value={selectedPeriod}
-                          onChange={(e) => setSelectedPeriod(e.target.value)}
-                          className="w-full border border-gray-300 rounded-lg px-4 py-2"
-                        >
-                          <option>Week 1</option>
-                          <option>Week 2</option>
-                          <option>Week 3</option>
-                          <option>Week 4</option>
-                        </select>
-                      </div>
-                    )}
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Team Member</label>
-                      <select 
-                        value={selectedUser}
-                        onChange={(e) => setSelectedUser(e.target.value)}
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2"
-                      >
-                        {users.map(user => (
-                          <option key={user}>{user}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
+                const midAngle = currentAngle + sliceAngle / 2;
+                const labelX = 200 + Math.cos(midAngle) * 100;
+                const labelY = 200 + Math.sin(midAngle) * 100;
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 14px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${name}`, labelX, labelY);
+                ctx.fillText(`£${value.toLocaleString()}`, labelX, labelY + 20);
                 
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <Award size={28} color="#f59e0b" />
-                    Leaderboards
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <LeaderboardCard 
-                      title="🏆 Top Placements"
-                      Icon={Trophy}
-                      data={leaderboards.placements}
-                      metric="placementsMade"
-                      color="#3b82f6"
-                    />
-                    <LeaderboardCard 
-                      title="💰 Top Biller"
-                      Icon={Pound}
-                      data={leaderboards.billings}
-                      metric="totalBillings"
-                      prefix="£"
-                      color="#10b981"
-                    />
-                    <LeaderboardCard 
-                      title="📞 Top Caller"
-                      Icon={Phone}
-                      data={leaderboards.calls}
-                      metric="callsMade"
-                      color="#f59e0b"
-                    />
-                    <LeaderboardCard 
-                      title="📤 Most Candidates Sent"
-                      Icon={Send}
-                      data={leaderboards.candidates}
-                      metric="candidatesMarketedOut"
-                      color="#ef4444"
-                    />
-                    <LeaderboardCard 
-                      title="🎤 Most Interviews"
-                      Icon={Target}
-                      data={leaderboards.interviews}
-                      metric="interviewBooked"
-                      color="#8b5cf6"
-                    />
-                  </div>
-                </div>
-                
-                <div className="bg-white rounded-lg shadow p-6 mb-6">
-                  <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <Calendar size={24} color="#10b981" />
-                    Daily Activity Trends
-                  </h2>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={dailyTrends}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="calls" fill="#3b82f6" name="Calls" />
-                      <Bar dataKey="candidates" fill="#10b981" name="Candidates Sent" />
-                      <Bar dataKey="interviews" fill="#f59e0b" name="Interviews" />
-                      <Bar dataKey="placements" fill="#ef4444" name="Placements" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                
-                <div className="bg-white rounded-lg shadow p-6 mb-6">
-                  <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <TrendingUp size={24} color="#3b82f6" />
-                    Conversion Funnel
-                  </h2>
-                  <div className="flex flex-col items-center py-4">
-                    {conversionRates.map((stage, index) => {
-                      const width = 100 - (index * 12);
-                      const nextStage = conversionRates[index + 1];
-                      return (
-                        <div key={stage.stage} className="w-full flex flex-col items-center mb-2">
-                          <div 
-                            className="relative flex items-center justify-between px-8 py-4 rounded-lg shadow-md text-white font-bold text-lg transition-all hover:shadow-lg"
-                            style={{ 
-                              width: `${width}%`,
-                              backgroundColor: COLORS[index % COLORS.length]
-                            }}
-                          >
-                            <span>{stage.stage}</span>
-                            <span>{stage.value}</span>
-                          </div>
-                          {nextStage && (
-                            <div className="text-sm font-semibold text-gray-600 my-1">
-                              ↓ {stage.rate ? stage.rate.toFixed(1) : 0}% conversion
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                
-                <div className="bg-white rounded-lg shadow p-6 mb-6">
-                  <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <Briefcase size={24} color="#8b5cf6" />
-                    Top Clients by Revenue
-                  </h2>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
-                      <Pie
-                        data={topClients}
-                        dataKey="value"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={100}
-                        label={(entry) => `${entry.name}: £${entry.value.toLocaleString()}`}
-                      >
-                        {topClients.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip formatter={(value) => `£${value.toLocaleString()}`} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-                
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
-                  <div className="bg-white rounded-lg shadow p-4 text-center">
-                    <Pound className="mx-auto mb-2 text-green-500" size={20} />
-                    <p className="text-2xl font-bold text-gray-800">£{metrics.totalBillings.toLocaleString()}</p>
-                    <p className="text-xs text-gray-600">Total Billings</p>
-                  </div>
-                  <div className="bg-white rounded-lg shadow p-4 text-center">
-                    <Trophy className="mx-auto mb-2 text-blue-500" size={20} />
-                    <p className="text-2xl font-bold text-gray-800">{metrics.placementsMade}</p>
-                    <p className="text-xs text-gray-600">Placements Made</p>
-                  </div>
-                  <div className="bg-white rounded-lg shadow p-4 text-center">
-                    <Target className="mx-auto mb-2 text-red-500" size={20} />
-                    <p className="text-2xl font-bold text-gray-800">{metrics.interviewBooked}</p>
-                    <p className="text-xs text-gray-600">Interviews Booked</p>
-                  </div>
-                  <div className="bg-white rounded-lg shadow p-4 text-center">
-                    <Send className="mx-auto mb-2 text-pink-500" size={20} />
-                    <p className="text-2xl font-bold text-gray-800">{metrics.candidatesMarketedOut}</p>
-                    <p className="text-xs text-gray-600">Candidates Sent</p>
-                  </div>
+                currentAngle += sliceAngle;
+            });
+        }
+
+        function updateDashboard() {
+            const filtered = filterData();
+            const metrics = aggregateMetrics(filtered);
+            const leaderboards = calculateLeaderboards(filtered);
+            
+            document.getElementById('leaderboards').innerHTML = 
+                renderLeaderboard('🏆 Top Placements', leaderboards.placements, 'placementsMade', '#3b82f6') +
+                renderLeaderboard('💰 Top Biller', leaderboards.billings, 'totalBillings', '#10b981', '£') +
+                renderLeaderboard('📞 Top Caller', leaderboards.calls, 'callsMade', '#f59e0b') +
+                renderLeaderboard('📤 Most Candidates Sent', leaderboards.candidates, 'candidatesMarketedOut', '#ef4444') +
+                renderLeaderboard('🎤 Most Interviews', leaderboards.interviews, 'interviewBooked', '#8b5cf6');
+            
+            document.getElementById('activityChart').innerHTML = renderActivityChart(filtered);
+            document.getElementById('funnelChart').innerHTML = renderFunnel(metrics);
+            drawPieChart(filtered);
+            
+            document.getElementById('topMetrics').innerHTML = `
+                <div class="metric-tile"><div class="metric-icon">💰</div><div class="metric-value">£${metrics.totalBillings.toLocaleString()}</div><div class="metric-label">Total Billings</div></div>
+                <div class="metric-tile"><div class="metric-icon">🏆</div><div class="metric-value">${metrics.placementsMade}</div><div class="metric-label">Placements Made</div></div>
+                <div class="metric-tile"><div class="metric-icon">🎯</div><div class="metric-value">${metrics.interviewBooked}</div><div class="metric-label">Interviews Booked</div></div>
+                <div class="metric-tile"><div class="metric-icon">📤</div><div class="metric-value">${metrics.candidatesMarketedOut}</div><div class="metric-label">Candidates Sent</div></div>
+                <div class="metric-tile"><div class="metric-icon">📞</div><div class="metric-value">${metrics.callsMade}</div><div class="metric-label">Calls Made</div></div>
+            `;
+            
+            document.getElementById('bottomMetrics').innerHTML = `
+                <div class="metric-tile"><div class="metric-icon">📅</div><div class="metric-value">${metrics.clientMeetingsBooked}</div><div class="metric-label">Meetings Booked</div></div>
+                <div class="metric-tile"><div class="metric-icon">✅</div><div class="metric-value">${metrics.termsSigned}</div><div class="metric-label">Terms Signed</div></div>
+                <div class="metric-tile"><div class="metric-icon">📄</div><div class="metric-value">${metrics.termsSent}</div><div class="metric-label">Terms Sent</div></div>
+                <div class="metric-tile"><div class="metric-icon">👤</div><div class="metric-value">${metrics.candidateRegistered}</div><div class="metric-label">Candidates Registered</div></div>
+                <div class="metric-tile"><div class="metric-icon">💼</div><div class="metric-value">${metrics.jobAdvertPlaced}</div><div class="metric-label">Job Ads Placed</div></div>
+            `;
+        }
+
+        updateDashboard();
+    </script>
+</body>
+</html>
