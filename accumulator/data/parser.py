@@ -418,8 +418,10 @@ def _safe_int(val: Any, default: int = 0) -> int:
 
 def decimal_to_fractional(decimal_odds: float) -> str:
     """Convert decimal odds to a fractional string like '5/2'."""
+    if decimal_odds is None:
+        return "—"
     if decimal_odds <= 1.0:
-        return "1/100"
+        return "Evs"
     numerator = decimal_odds - 1
     # Find a reasonable fraction
     for denominator in [1, 2, 4, 5, 8, 10, 20, 50, 100]:

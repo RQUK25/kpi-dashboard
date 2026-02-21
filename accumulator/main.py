@@ -121,6 +121,7 @@ from data.parser import (
 from analysis.matchups import analyse_fixture_matchups
 from analysis.selection import evaluate_fixture_selections, evaluate_player_card_selections
 from analysis.tiers import build_all_tiers, build_excluded_list
+from data.demo import get_demo_payload
 
 # ---------------------------------------------------------------------------
 # FastAPI app
@@ -491,11 +492,16 @@ async def serve_index():
 async def get_matchday(
     date_str: Optional[str] = Query(None, alias="date", description="YYYY-MM-DD (default: today)"),
     leagues: Optional[str] = Query(None, description="Comma-separated league codes e.g. PL,PD"),
+    demo: Optional[bool] = Query(False, description="Return realistic demo data without making external calls"),
 ):
     """
     Main analysis endpoint.
     Returns tiered accumulator selections and matchup data as JSON.
+    Add ?demo=true to see a fully populated sample response without API keys.
     """
+    if demo:
+        return JSONResponse(content=get_demo_payload())
+
     try:
         if date_str:
             matchday_date = date.fromisoformat(date_str)
@@ -517,6 +523,22 @@ async def get_matchday(
 
     result = await _run_analysis(matchday_date, league_codes)
     return JSONResponse(content=result)
+
+
+@app.get("/demo", include_in_schema=False)
+async def demo_redirect():
+    """Shortcut: serves the frontend pre-loaded with demo data."""
+    from fastapi.responses import HTMLResponse
+    index = FRONTEND_DIR / "index.html"
+    if not index.exists():
+        return PlainTextResponse("Frontend not found.", status_code=404)
+    # Inject a flag so app.js auto-loads demo mode
+    html = index.read_text(encoding="utf-8")
+    html = html.replace(
+        "<script src=\"/static/app.js\"></script>",
+        "<script>window.DEMO_MODE = true;</script>\n  <script src=\"/static/app.js\"></script>"
+    )
+    return HTMLResponse(content=html)
 
 
 @app.get("/admin/log", response_class=PlainTextResponse)

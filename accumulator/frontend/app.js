@@ -23,17 +23,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const today = new Date().toISOString().split('T')[0];
   datePicker.value = today;
 
-  loadMatchday();
+  // Auto-load demo mode if flag is set (via /demo route)
+  if (window.DEMO_MODE) {
+    const banner = document.createElement('div');
+    banner.style.cssText = 'background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);border-radius:6px;padding:8px 16px;margin:12px 0;font-size:0.82rem;color:#93c5fd;';
+    banner.textContent = 'Demo mode — showing sample data. Add your API keys to .env to see live matchday data.';
+    document.querySelector('main.container').prepend(banner);
+    loadMatchday(true);
+  } else {
+    loadMatchday();
+  }
 });
 
 // ---------------------------------------------------------------------------
 // Data loading
 // ---------------------------------------------------------------------------
 
-async function loadMatchday() {
+async function loadMatchday(demo = false) {
   const dateInput = document.getElementById('date-input').value;
   const params = new URLSearchParams();
   if (dateInput) params.set('date', dateInput);
+  if (demo || window.DEMO_MODE) params.set('demo', 'true');
 
   setLoading(true);
   clearError();

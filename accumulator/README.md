@@ -4,29 +4,64 @@ A responsive single-page web application that pulls football matchday data from 
 
 ---
 
-## Quick Start
+## Quick Start (Local)
 
 ```bash
 cd accumulator
 
-# 1. Install dependencies
-pip install -r requirements.txt
+# One-command startup (handles deps + .env creation automatically)
+./start.sh
 
-# 2. Configure API keys
-cp .env.template .env
-# Edit .env and fill in:
-#   FOOTBALL_DATA_KEY  – https://www.football-data.org/client/register (free)
-#   ODDS_API_KEY       – https://the-odds-api.com/#get-access (free tier)
-
-# 3. Run the app
-python main.py
-# or: uvicorn main:app --reload --port 8000
-
-# 4. Open browser
-# http://localhost:8000
+# Custom port
+./start.sh 3000
 ```
 
-The app degrades gracefully if API keys are missing — it will still run using whatever sources are available (Understat and FBref do not require keys).
+Then open:
+- **Live data** → http://localhost:8000
+- **Demo (no keys needed)** → http://localhost:8000/demo
+- **API docs** → http://localhost:8000/docs
+- **Activity log** → http://localhost:8000/admin/log
+
+### Manual startup
+
+```bash
+pip install -r requirements.txt
+cp .env.template .env      # then fill in your API keys
+uvicorn main:app --reload --port 8000
+```
+
+The app degrades gracefully if API keys are missing — it will still run. Visit `/demo` to see the full UI populated with realistic sample data without any API keys.
+
+---
+
+## Deployment to Render.com (free, no domain needed)
+
+Render gives you a free `https://your-app.onrender.com` subdomain.
+
+1. Push this repo to GitHub (it's already there).
+
+2. Go to [render.com](https://render.com) → **New +** → **Web Service**
+
+3. Connect your GitHub repo and select the `accumulator/` directory as the root
+   (or set root directory to `accumulator` in the Render settings).
+
+4. Render will auto-detect the `render.yaml` — settings are:
+   - **Build command**: `pip install -r requirements.txt`
+   - **Start command**: `uvicorn main:app --host 0.0.0.0 --port $PORT --app-dir .`
+   - **Python version**: 3.11
+
+5. In the Render dashboard → **Environment** tab, add:
+   ```
+   FOOTBALL_DATA_KEY = <your key from football-data.org>
+   ODDS_API_KEY      = <your key from the-odds-api.com>
+   ```
+
+6. Deploy. Your app will be live at `https://accumulator-predictor.onrender.com`
+   (name varies — Render assigns it).
+
+**Note on Render free tier**: The instance sleeps after 15 minutes of inactivity and takes ~30 seconds to wake on the next request. The cache directory is ephemeral and resets on each deploy, so the first request after a deploy will make fresh API calls.
+
+---
 
 ---
 

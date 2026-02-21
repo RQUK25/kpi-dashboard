@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: accumulator-predictor
+    runtime: python
+    region: frankfurt
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --app-dir .
+    envVars:
+      - key: FOOTBALL_DATA_KEY
+        sync: false        # Set this in the Render dashboard
+      - key: ODDS_API_KEY
+        sync: false        # Set this in the Render dashboard
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+    healthCheckPath: /health
