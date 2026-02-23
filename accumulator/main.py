@@ -150,7 +150,7 @@ if FRONTEND_DIR.exists():
 # Utility
 # ---------------------------------------------------------------------------
 
-ACTIVE_LEAGUES = ["PL", "PD", "BL1", "SA", "FL1"]
+ACTIVE_LEAGUES = ["PL", "ELC", "PD", "BL1", "SA", "FL1", "CL", "EL"]
 
 
 def _check_source_status(league_code: str, matchday_date: date) -> Dict[str, str]:

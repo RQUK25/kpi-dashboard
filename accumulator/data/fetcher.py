@@ -62,10 +62,13 @@ FOOTBALL_DATA_BASE = "https://api.football-data.org/v4"
 
 LEAGUE_CODES = {
     "PL":  2021,  # Premier League
+    "ELC": 2016,  # Championship
     "PD":  2014,  # La Liga
     "BL1": 2002,  # Bundesliga
     "SA":  2019,  # Serie A
     "FL1": 2015,  # Ligue 1
+    "CL":  2001,  # UEFA Champions League
+    "EL":  2333,  # UEFA Europa League
 }
 
 
