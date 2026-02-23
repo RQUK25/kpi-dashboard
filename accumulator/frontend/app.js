@@ -12,6 +12,7 @@
 
 let _currentData = null;
 let _expandedRows = new Set();
+const _pickCache = new Map();
 
 // ---------------------------------------------------------------------------
 // Init
@@ -140,6 +141,8 @@ function renderSummaryBar(data) {
 function renderTiers(tiers) {
   const grid = document.getElementById('tiers-grid');
   grid.innerHTML = '';
+  _pickCache.clear();
+  _expandedRows.clear();
 
   const tierKeys = ['low', 'medium', 'high'];
   tierKeys.forEach(key => {
@@ -187,6 +190,7 @@ function buildSelectionTable(picks, tierKey) {
 
   const rowsHtml = picks.map((pick, idx) => {
     const rowId = `${tierKey}-${idx}`;
+    _pickCache.set(rowId, pick);
     return buildSelectionRow(pick, rowId);
   }).join('');
 
@@ -226,7 +230,7 @@ function buildSelectionRow(pick, rowId) {
     : '<span class="text-muted">—</span>';
 
   return `
-    <tr id="row-${rowId}" onclick="toggleRow('${rowId}', ${JSON.stringify(pick).replace(/'/g, "\\'")})"
+    <tr id="row-${rowId}" onclick="toggleRow('${rowId}')"
         class="selection-row">
       <td class="col-fixture fixture-cell">
         <div class="fixture-name">${escHtml(pick.home_team)} vs ${escHtml(pick.away_team)}</div>
@@ -246,7 +250,7 @@ function buildSelectionRow(pick, rowId) {
       <td class="col-badges"><div class="badges">${badgesHtml}</div></td>
       <td class="col-expand">
         <button class="expand-btn" id="expand-btn-${rowId}"
-                onclick="event.stopPropagation(); toggleRow('${rowId}', ${JSON.stringify(pick).replace(/'/g, "\\'")})">
+                onclick="event.stopPropagation(); toggleRow('${rowId}')">
           &#9654;
         </button>
       </td>
@@ -261,7 +265,8 @@ function buildSelectionRow(pick, rowId) {
 // Row expansion
 // ---------------------------------------------------------------------------
 
-function toggleRow(rowId, pick) {
+function toggleRow(rowId) {
+  const pick = _pickCache.get(rowId);
   const detailRow = document.getElementById(`detail-${rowId}`);
   const expandBtn = document.getElementById(`expand-btn-${rowId}`);
   const mainRow = document.getElementById(`row-${rowId}`);
