@@ -1,18 +1,19 @@
 """
 Tier building logic.
 
-Builds three tiered accumulators from scored selections:
+Builds three independently constructed accumulators from scored selections:
 
-  Low    – highest confidence, 5-6 picks, ~5/1 combined
-  Medium – Low picks + more, 6-8 picks, ~10/1-20/1
-  High   – Medium picks + more, 8-10 picks, ~50/1+
+  Low    – highest confidence, 4-6 picks, ~4/1-8/1 combined
+  Medium – mid confidence + higher odds, 5-8 picks, ~10/1-25/1
+  High   – wider net + speculative, 6-10 picks, ~30/1+
 
 Rules:
-  - Minimum confidence: Low ≥ 7, Medium ≥ 6, High ≥ 5
+  - ONE selection per fixture per tier (no duplicate fixtures)
   - No duplicate market for same fixture within a tier
   - At least 3 different fixtures per tier
   - Value-flagged selections excluded from Low/Medium; allowed in High with warning
   - High tier only: Correct Score market
+  - Each tier is built independently for genuine variety
 """
 
 import logging
@@ -28,37 +29,40 @@ logger = logging.getLogger(__name__)
 
 TIER_CONFIGS = {
     "low": {
-        "name": "Low",
+        "name": "Low Risk",
         "subtitle": "Safe Accumulator",
         "min_confidence": 7,
-        "target_picks_min": 5,
+        "target_picks_min": 4,
         "target_picks_max": 6,
-        "target_odds_min": 5.0,   # combined decimal
-        "target_odds_max": 7.0,
+        "target_odds_min": 4.0,
+        "target_odds_max": 8.0,
         "allow_value_flag": False,
         "allow_high_tier_only": False,
+        "prefer_low_odds": True,
     },
     "medium": {
-        "name": "Medium",
+        "name": "Medium Risk",
         "subtitle": "Value Accumulator",
         "min_confidence": 6,
-        "target_picks_min": 6,
+        "target_picks_min": 5,
         "target_picks_max": 8,
-        "target_odds_min": 11.0,
-        "target_odds_max": 21.0,
+        "target_odds_min": 10.0,
+        "target_odds_max": 25.0,
         "allow_value_flag": False,
         "allow_high_tier_only": False,
+        "prefer_low_odds": False,
     },
     "high": {
-        "name": "High",
+        "name": "High Risk",
         "subtitle": "Longshot Accumulator",
         "min_confidence": 5,
-        "target_picks_min": 8,
+        "target_picks_min": 6,
         "target_picks_max": 10,
-        "target_odds_min": 51.0,
+        "target_odds_min": 30.0,
         "target_odds_max": 500.0,
         "allow_value_flag": True,
         "allow_high_tier_only": True,
+        "prefer_low_odds": False,
     },
 }
 
@@ -77,6 +81,16 @@ def _fixture_count(selections: List[Dict]) -> int:
     return len({s["fixture_id"] for s in selections})
 
 
+def _fixture_ids(selections: List[Dict]) -> set:
+    return {s["fixture_id"] for s in selections}
+
+
+def _has_fixture(selections: List[Dict], candidate: Dict) -> bool:
+    """Return True if the candidate's fixture is already in the selections."""
+    fid = candidate["fixture_id"]
+    return any(s["fixture_id"] == fid for s in selections)
+
+
 def _has_duplicate_market(selections: List[Dict], candidate: Dict) -> bool:
     """Return True if the candidate would duplicate a market for the same fixture."""
     fid = candidate["fixture_id"]
@@ -91,12 +105,21 @@ def _has_duplicate_market(selections: List[Dict], candidate: Dict) -> bool:
 # Sort candidates for greedy selection
 # ---------------------------------------------------------------------------
 
-def _sort_candidates(candidates: List[Dict], prefer_high_conf: bool = True) -> List[Dict]:
+def _sort_candidates(candidates: List[Dict], prefer_low_odds: bool = True) -> List[Dict]:
     """
     Sort candidates for greedy selection.
-    Primary: confidence (desc)
-    Secondary: estimated decimal odds (desc) – adds more to combined odds
+    - prefer_low_odds=True (Low tier): confidence desc, then lower odds first (safer)
+    - prefer_low_odds=False (Medium/High): confidence desc, then higher odds first (more value)
     """
+    if prefer_low_odds:
+        return sorted(
+            candidates,
+            key=lambda s: (
+                s.get("confidence", 0),
+                -(s.get("decimal_odds") or DEFAULT_ODDS),
+            ),
+            reverse=True,
+        )
     return sorted(
         candidates,
         key=lambda s: (
@@ -108,17 +131,16 @@ def _sort_candidates(candidates: List[Dict], prefer_high_conf: bool = True) -> L
 
 
 # ---------------------------------------------------------------------------
-# Build a single tier
+# Build a single tier (independently)
 # ---------------------------------------------------------------------------
 
 def build_tier(
     tier_key: str,
-    base_selections: List[Dict],
-    extra_candidates: List[Dict],
+    candidates: List[Dict],
 ) -> Dict:
     """
-    Build a tier starting from base_selections (from the tier below) and
-    adding from extra_candidates greedily.
+    Build a tier by greedily picking from candidates.
+    Enforces ONE selection per fixture for diversity.
 
     Returns a tier dict with picks, combined odds, and notes.
     """
@@ -127,14 +149,14 @@ def build_tier(
     max_picks = config["target_picks_max"]
     allow_value = config["allow_value_flag"]
     allow_high_only = config["allow_high_tier_only"]
+    prefer_low = config.get("prefer_low_odds", True)
 
-    picks = list(base_selections)  # Start from inherited base
     notes = []
     value_flagged_picks = []
 
-    # Filter extra candidates
+    # Filter eligible candidates
     eligible = [
-        c for c in extra_candidates
+        c for c in candidates
         if (
             c.get("confidence", 0) >= min_conf
             and (allow_value or not c.get("value_flag", False))
@@ -142,29 +164,30 @@ def build_tier(
         )
     ]
 
-    sorted_eligible = _sort_candidates(eligible)
+    sorted_eligible = _sort_candidates(eligible, prefer_low_odds=prefer_low)
 
+    # Greedy pick: one selection per fixture
+    picks: List[Dict] = []
     for candidate in sorted_eligible:
         if len(picks) >= max_picks:
             break
-        if _has_duplicate_market(picks, candidate):
+        if _has_fixture(picks, candidate):
             continue
         picks.append(candidate)
 
-    # If High tier and still not at 50/1, try adding value-flagged picks with warning
+    # If High tier and still below target, try adding value-flagged picks
     if tier_key == "high":
         current_odds = _combined_odds(picks)
         if current_odds < config["target_odds_min"]:
             value_candidates = [
-                c for c in extra_candidates
+                c for c in candidates
                 if c.get("value_flag", False) and c.get("confidence", 0) >= min_conf
-                and not _has_duplicate_market(picks, c)
-                and c not in picks
+                and not _has_fixture(picks, c)
             ]
-            for candidate in _sort_candidates(value_candidates, prefer_high_conf=False):
+            for candidate in _sort_candidates(value_candidates, prefer_low_odds=False):
                 if len(picks) >= max_picks:
                     break
-                if _has_duplicate_market(picks, candidate):
+                if _has_fixture(picks, candidate):
                     continue
                 picks.append(candidate)
                 value_flagged_picks.append(candidate.get("market_label", ""))
@@ -172,23 +195,23 @@ def build_tier(
             final_odds = _combined_odds(picks)
             if final_odds < config["target_odds_min"]:
                 notes.append(
-                    f"Note: Could not reach target odds of {config['target_odds_min']:.0f}/1 "
-                    f"without dropping below minimum confidence threshold of {min_conf}. "
-                    f"Best achievable odds: {final_odds:.1f} (decimal)."
+                    f"Could not reach target odds of {config['target_odds_min']:.0f}/1 "
+                    f"without dropping below minimum confidence of {min_conf}. "
+                    f"Best achievable: {final_odds:.1f} (decimal)."
                 )
 
     if value_flagged_picks:
         notes.append(
-            f"Warning: The following selections carry a 'Thin Value' flag – "
-            f"bookmaker odds may not reflect true probability: {', '.join(value_flagged_picks)}."
+            f"Thin Value flag on: {', '.join(value_flagged_picks)}. "
+            f"Bookmaker odds may not reflect true probability."
         )
 
     # Fixture diversity check
     fixture_count = _fixture_count(picks)
-    if fixture_count < 3:
+    if fixture_count < 3 and picks:
         notes.append(
-            f"Note: Only {fixture_count} different fixture(s) covered – "
-            f"ideally 3+ fixtures for diversification."
+            f"Only {fixture_count} fixture(s) covered — "
+            f"ideally 3+ for diversification."
         )
 
     combined = _combined_odds(picks)
@@ -207,39 +230,47 @@ def build_tier(
 
 
 # ---------------------------------------------------------------------------
-# Build all three tiers
+# Build all three tiers (independently for genuine variety)
 # ---------------------------------------------------------------------------
 
 def build_all_tiers(all_selections: List[Dict]) -> Dict[str, Dict]:
     """
     Entry point: given all scored selections across all fixtures,
-    build Low, Medium, and High tiers.
+    build Low, Medium, and High tiers independently.
 
-    Returns dict with keys 'low', 'medium', 'high'.
+    Each tier picks the best selection per fixture according to its own
+    criteria, so Medium/High are NOT just Low + extras.
     """
-    # Separate out high-tier-only selections
     standard = [s for s in all_selections if not s.get("high_tier_only", False)]
-    high_only = [s for s in all_selections if s.get("high_tier_only", False)]
 
-    # --- Low tier ---
+    # --- Low tier: top confidence, safest odds ---
     low_candidates = [s for s in standard if s.get("confidence", 0) >= 7]
-    low_tier = build_tier("low", [], low_candidates)
+    low_tier = build_tier("low", low_candidates)
 
-    # --- Medium tier: inherit Low picks, add medium-confidence ---
-    medium_candidates = [
-        s for s in standard
-        if s.get("confidence", 0) >= 6
-        and s not in low_tier["picks"]
-    ]
-    medium_tier = build_tier("medium", list(low_tier["picks"]), medium_candidates)
+    # --- Medium tier: slightly broader, prefer higher-odds picks ---
+    # For each fixture, prefer a DIFFERENT market than Low picked (variety)
+    low_picks_set = {(s["fixture_id"], s["market_key"]) for s in low_tier["picks"]}
+    medium_candidates = sorted(
+        [s for s in standard if s.get("confidence", 0) >= 6],
+        key=lambda s: (
+            0 if (s["fixture_id"], s["market_key"]) in low_picks_set else 1,
+            -s.get("confidence", 0),
+        ),
+        reverse=True,
+    )
+    medium_tier = build_tier("medium", medium_candidates)
 
-    # --- High tier: inherit Medium picks, add all eligible ---
-    high_candidates = [
-        s for s in all_selections
-        if s.get("confidence", 0) >= 5
-        and s not in medium_tier["picks"]
-    ]
-    high_tier = build_tier("high", list(medium_tier["picks"]), high_candidates)
+    # --- High tier: widest net, include high-tier-only markets ---
+    medium_picks_set = {(s["fixture_id"], s["market_key"]) for s in medium_tier["picks"]}
+    high_candidates = sorted(
+        [s for s in all_selections if s.get("confidence", 0) >= 5],
+        key=lambda s: (
+            0 if (s["fixture_id"], s["market_key"]) in medium_picks_set else 1,
+            -s.get("confidence", 0),
+        ),
+        reverse=True,
+    )
+    high_tier = build_tier("high", high_candidates)
 
     return {
         "low": low_tier,

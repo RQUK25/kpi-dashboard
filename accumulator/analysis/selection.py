@@ -21,11 +21,63 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 MARKETS = {
+    # --- 1X2 (Match Result) ---
+    "match_result_home": {
+        "label": "Match Result - Home Win",
+        "requires": ["fd"],
+        "stat_key": "win_rate",
+        "direction": "over",
+        "threshold": 0.50,
+    },
+    "match_result_away": {
+        "label": "Match Result - Away Win",
+        "requires": ["fd"],
+        "stat_key": "win_rate",
+        "direction": "over",
+        "threshold": 0.45,
+    },
+    "match_result_draw": {
+        "label": "Match Result - Draw",
+        "requires": ["fd"],
+        "stat_key": "draw_rate",
+        "direction": "over",
+        "threshold": 0.30,
+    },
+    # --- Over/Under Goals ---
+    "goals_over_15": {
+        "label": "Over 1.5 Goals",
+        "requires": ["fd"],
+        "stat_key": "goals_scored_avg",
+        "direction": "over",
+        "threshold": 1.5,
+    },
+    "goals_over_25": {
+        "label": "Over 2.5 Goals",
+        "requires": ["fd"],
+        "stat_key": "goals_scored_avg",
+        "direction": "over",
+        "threshold": 2.5,
+    },
+    "goals_under_25": {
+        "label": "Under 2.5 Goals",
+        "requires": ["fd"],
+        "stat_key": "goals_scored_avg",
+        "direction": "under",
+        "threshold": 2.5,
+    },
+    "goals_over_35": {
+        "label": "Over 3.5 Goals",
+        "requires": ["fd"],
+        "stat_key": "goals_scored_avg",
+        "direction": "over",
+        "threshold": 3.5,
+    },
+    # --- BTTS ---
     "btts_yes": {
         "label": "Both Teams to Score - Yes",
         "requires": ["fd"],
         "stat_key": "btts_rate",
-        "direction": "over",  # season stat should be >= threshold
+        "direction": "over",
         "threshold": 0.5,
     },
     "btts_no": {
@@ -35,6 +87,7 @@ MARKETS = {
         "direction": "under",
         "threshold": 0.5,
     },
+    # --- Corners ---
     "corners_over_85": {
         "label": "Total Corners Over 8.5",
         "requires": ["understat"],
@@ -63,6 +116,7 @@ MARKETS = {
         "direction": "over",
         "threshold": 11.5,
     },
+    # --- Shots ---
     "shots_on_target_over": {
         "label": "Total Shots on Target Over",
         "requires": ["understat"],
@@ -77,6 +131,7 @@ MARKETS = {
         "direction": "over",
         "threshold": 5.5,
     },
+    # --- Fouls / Cards ---
     "fouls_over": {
         "label": "Total Fouls Over",
         "requires": ["fbref"],
@@ -105,6 +160,7 @@ MARKETS = {
         "direction": "over",
         "threshold": 4.5,
     },
+    # --- Asian Handicap ---
     "asian_handicap_home": {
         "label": "Asian Handicap - Home",
         "requires": ["fd", "understat"],
@@ -119,6 +175,7 @@ MARKETS = {
         "direction": "over",
         "threshold": 0.4,
     },
+    # --- Correct Score (High tier only) ---
     "correct_score": {
         "label": "Correct Score",
         "requires": ["understat"],
@@ -158,13 +215,42 @@ def season_average_check(
     home_val = home_stats.get(stat_key)
     away_val = away_stats.get(stat_key)
 
-    # Special handling for combined stats
-    if market_key.startswith("corners") or market_key.startswith("shots") or market_key.startswith("fouls") or market_key.startswith("cards"):
-        # Sum home + away for totals markets
+    # --- 1X2 Match Result markets ---
+    if market_key == "match_result_home":
+        home_wr = home_stats.get("win_rate")
+        if home_wr is None:
+            return False, 0.0, "No home win rate data"
+        combined = home_wr
+    elif market_key == "match_result_away":
+        away_wr = away_stats.get("win_rate")
+        if away_wr is None:
+            return False, 0.0, "No away win rate data"
+        combined = away_wr
+    elif market_key == "match_result_draw":
+        home_dr = home_stats.get("draw_rate")
+        away_dr = away_stats.get("draw_rate")
+        if home_dr is not None and away_dr is not None:
+            combined = (home_dr + away_dr) / 2
+        else:
+            return False, 0.0, "No draw rate data"
+    # --- Over/Under Goals markets ---
+    elif market_key.startswith("goals_over") or market_key.startswith("goals_under"):
+        home_ga = home_stats.get("goals_scored_avg")
+        away_ga = away_stats.get("goals_scored_avg")
+        if home_ga is not None and away_ga is not None:
+            combined = home_ga + away_ga
+        elif home_ga is not None:
+            combined = home_ga * 2
+        elif away_ga is not None:
+            combined = away_ga * 2
+        else:
+            return False, 0.0, "No goals data"
+    # --- Totals markets (corners, shots, fouls, cards) ---
+    elif market_key.startswith("corners") or market_key.startswith("shots") or market_key.startswith("fouls") or market_key.startswith("cards"):
         if home_val is not None and away_val is not None:
             combined = home_val + away_val
         elif home_val is not None:
-            combined = home_val * 2  # extrapolate from one side
+            combined = home_val * 2
         elif away_val is not None:
             combined = away_val * 2
         else:
@@ -531,6 +617,13 @@ def _lookup_odds(market_key: str, odds_data: Dict) -> Optional[float]:
         return None
 
     odds_key_map = {
+        "match_result_home": "h2h_home",
+        "match_result_away": "h2h_away",
+        "match_result_draw": "h2h_draw",
+        "goals_over_15": "totals_over_1.5",
+        "goals_over_25": "totals_over_2.5",
+        "goals_under_25": "totals_under_2.5",
+        "goals_over_35": "totals_over_3.5",
         "btts_yes": "h2h_yes",
         "btts_no": "h2h_no",
         "corners_over_85": "totals_over_8.5",
@@ -563,6 +656,13 @@ def _derive_selection_label(market_key: str, fixture: Dict, xg_data: Dict) -> st
     away = fixture.get("away_team", "Away")
 
     labels = {
+        "match_result_home": f"{home} to Win",
+        "match_result_away": f"{away} to Win",
+        "match_result_draw": "Draw",
+        "goals_over_15": "Over 1.5 Goals",
+        "goals_over_25": "Over 2.5 Goals",
+        "goals_under_25": "Under 2.5 Goals",
+        "goals_over_35": "Over 3.5 Goals",
         "btts_yes": "Both Teams to Score - Yes",
         "btts_no": "Both Teams to Score - No",
         "corners_over_85": "Total Corners Over 8.5",
@@ -615,7 +715,24 @@ def _build_key_stats(market_key: str, home_stats: Dict, away_stats: Dict, xg_dat
     """Compile the key stats to display in the expanded selection row."""
     stats: Dict = {}
 
-    if market_key.startswith("btts"):
+    if market_key.startswith("match_result"):
+        stats["home_win_rate"] = home_stats.get("win_rate")
+        stats["away_win_rate"] = away_stats.get("win_rate")
+        stats["home_draw_rate"] = home_stats.get("draw_rate")
+        stats["away_draw_rate"] = away_stats.get("draw_rate")
+        stats["home_goals_avg"] = home_stats.get("goals_scored_avg")
+        stats["away_goals_avg"] = away_stats.get("goals_scored_avg")
+    elif market_key.startswith("goals_"):
+        stats["home_goals_avg"] = home_stats.get("goals_scored_avg")
+        stats["away_goals_avg"] = away_stats.get("goals_scored_avg")
+        stats["home_conceded_avg"] = home_stats.get("goals_conceded_avg")
+        stats["away_conceded_avg"] = away_stats.get("goals_conceded_avg")
+        stats["combined_goals_avg"] = None
+        h = home_stats.get("goals_scored_avg")
+        a = away_stats.get("goals_scored_avg")
+        if h is not None and a is not None:
+            stats["combined_goals_avg"] = round(h + a, 2)
+    elif market_key.startswith("btts"):
         stats["home_btts_rate"] = home_stats.get("btts_rate")
         stats["away_btts_rate"] = away_stats.get("btts_rate")
         stats["home_goals_avg"] = home_stats.get("goals_scored_avg")
