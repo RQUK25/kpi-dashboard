@@ -179,10 +179,13 @@ ODDS_BASE = "https://api.the-odds-api.com/v4"
 
 LEAGUE_TO_SPORT = {
     "PL":  "soccer_england_premier_league",
+    "ELC": "soccer_england_championship",
     "PD":  "soccer_spain_la_liga",
     "BL1": "soccer_germany_bundesliga",
     "SA":  "soccer_italy_serie_a",
     "FL1": "soccer_france_ligue_one",
+    "CL":  "soccer_uefa_champs_league",
+    "EL":  "soccer_uefa_europa_league",
 }
 
 
@@ -365,18 +368,24 @@ FBREF_BASE = "https://fbref.com"
 
 FBREF_LEAGUE_URLS = {
     "PL":  "/en/comps/9/stats/Premier-League-Stats",
+    "ELC": "/en/comps/10/stats/Championship-Stats",
     "PD":  "/en/comps/12/stats/La-Liga-Stats",
     "BL1": "/en/comps/20/stats/Bundesliga-Stats",
     "SA":  "/en/comps/11/stats/Serie-A-Stats",
     "FL1": "/en/comps/13/stats/Ligue-1-Stats",
+    "CL":  "/en/comps/8/stats/Champions-League-Stats",
+    "EL":  "/en/comps/19/stats/Europa-League-Stats",
 }
 
 FBREF_MISC_URLS = {
     "PL":  "/en/comps/9/misc/Premier-League-Stats",
+    "ELC": "/en/comps/10/misc/Championship-Stats",
     "PD":  "/en/comps/12/misc/La-Liga-Stats",
     "BL1": "/en/comps/20/misc/Bundesliga-Stats",
     "SA":  "/en/comps/11/misc/Serie-A-Stats",
     "FL1": "/en/comps/13/misc/Ligue-1-Stats",
+    "CL":  "/en/comps/8/misc/Champions-League-Stats",
+    "EL":  "/en/comps/19/misc/Europa-League-Stats",
 }
 
 _fbref_last_request: float = 0.0

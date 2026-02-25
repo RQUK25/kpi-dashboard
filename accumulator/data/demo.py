@@ -88,6 +88,20 @@ def get_demo_payload() -> dict:
             },
             explanation="Inter win 65% of home fixtures. AC Milan's away form is inconsistent with a 42% win rate. Derby della Madonnina suits the home side.",
         ),
+        _pick(
+            fid=1008, home="Real Madrid", away="Man City", league="CL",
+            mkey="goals_over_25", mlabel="Over 2.5 Goals",
+            selection="Over 2.5 Goals",
+            conf=8, decimal_odds=1.80,
+            key_stats={
+                "home_goals_avg": "2.5",
+                "away_goals_avg": "2.3",
+                "combined_goals_avg": "4.8",
+                "home_conceded_avg": "0.9",
+                "away_conceded_avg": "1.1",
+            },
+            explanation="Combined goals average of 4.8 per game comfortably clears 2.5. Both sides are prolific scorers in European competition this season.",
+        ),
     ]
 
     # -----------------------------------------------------------------------
@@ -171,6 +185,20 @@ def get_demo_payload() -> dict:
                 "away_conceded_avg": "1.3",
             },
             explanation="Combined goal average 3.8, clearing the 2.5 line by 52%. Napoli score 2.0 per away game; Juventus have conceded in 8 of last 10.",
+        ),
+        _pick(
+            fid=1008, home="Real Madrid", away="Man City", league="CL",
+            mkey="btts_yes", mlabel="Both Teams to Score - Yes",
+            selection="Both Teams to Score - Yes",
+            conf=7, decimal_odds=2.00,
+            matchup_boost=True,
+            key_stats={
+                "home_btts_rate": "0.72",
+                "away_btts_rate": "0.75",
+                "home_goals_avg": "2.5",
+                "away_goals_avg": "2.3",
+            },
+            explanation="BTTS in 72% and 75% of fixtures respectively — two of Europe's highest rates. Matchup analysis supports elevated scoring in this heavyweight tie.",
         ),
     ]
 
@@ -265,6 +293,18 @@ def get_demo_payload() -> dict:
             },
             explanation="Napoli hold an xG away advantage of +0.49 over Juventus's home average. Strong away form supports the handicap selection.",
         ),
+        _pick(
+            fid=1008, home="Real Madrid", away="Man City", league="CL",
+            mkey="corners_over_105", mlabel="Total Corners Over 10.5",
+            selection="Total Corners Over 10.5",
+            conf=6, decimal_odds=2.10,
+            key_stats={
+                "home_corners_approx": "6.5",
+                "away_corners_approx": "6.2",
+                "combined_approx": "12.7",
+            },
+            explanation="Combined corner approximation of 12.7 — 21% above the 10.5 line. Both sides press aggressively and win corners at high rates in European ties.",
+        ),
     ]
 
     def combined(picks):
@@ -341,15 +381,23 @@ def get_demo_payload() -> dict:
         "matchday_date": DEMO_DATE,
         "generated_at": f"{DEMO_DATE}T10:00:00Z",
         "demo_mode": True,
-        "leagues_covered": ["PL", "PD", "BL1", "SA", "FL1"],
+        "leagues_covered": ["PL", "PD", "BL1", "SA", "FL1", "CL"],
         "source_statuses": {
-            league: {
+            **{
+                league: {
+                    "football-data": "ok",
+                    "odds-api": "ok",
+                    "understat": "ok",
+                    "fbref": "ok",
+                }
+                for league in ["PL", "PD", "BL1", "SA", "FL1"]
+            },
+            "CL": {
                 "football-data": "ok",
                 "odds-api": "ok",
-                "understat": "ok",
+                "understat": "unknown",  # Understat does not cover CL
                 "fbref": "ok",
-            }
-            for league in ["PL", "PD", "BL1", "SA", "FL1"]
+            },
         },
         "header_sources": [
             {"source": "football-data", "status": "ok", "reason": ""},
@@ -399,8 +447,8 @@ def get_demo_payload() -> dict:
         },
         "matchups": matchups,
         "excluded_selections": excluded,
-        "total_fixtures_analysed": 7,
-        "total_selections_evaluated": 31,
+        "total_fixtures_analysed": 8,
+        "total_selections_evaluated": 34,
     }
 
 
