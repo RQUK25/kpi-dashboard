@@ -1,1076 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Poly Pool Consultation — PoolStore.co.uk</title>
-  <meta name="description" content="Design your perfect poly pool with PoolStore experts. Book a FREE no-obligation consultation today. UK's #1 pool store since 1999. Call 02380 734922.">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --navy:    #0b2d48;
-      --ocean:   #1a6b9a;
-      --teal:    #00b4d8;
-      --sky:     #e0f4fb;
-      --gold:    #f4a800;
-      --green:   #16a34a;
-      --white:   #ffffff;
-      --offwhite:#f7fafc;
-      --grey:    #6b7280;
-      --dark:    #111827;
-      --border:  #e5e7eb;
-      --radius:  10px;
-      --shadow:  0 2px 12px rgba(0,0,0,.10);
-      --shadow-lg:0 8px 32px rgba(0,0,0,.14);
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--offwhite); color: var(--dark); line-height: 1.6; }
-    a { text-decoration: none; color: inherit; }
-    button { cursor: pointer; border: none; font-family: inherit; }
-    img { display: block; max-width: 100%; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poly Pools | PoolStore.co.uk — UK's #1 Pool Store Since 1999</title>
+<meta name="description" content="Discover poly pools that heat up faster, stay warm longer, and install in just 2 weeks. Get your free expert consultation from PoolStore — no hard sell, just honest advice.">
+<style>
+:root {
+  --navy: #0b2d48;
+  --ocean: #1a6b9a;
+  --teal: #00b4d8;
+  --sky: #e0f4fb;
+  --gold: #f4a800;
+  --white: #ffffff;
+  --offwhite: #f8fbfd;
+  --text-dark: #1a2a3a;
+  --text-mid: #4a6070;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
 
-    /* ── Announcement Bar ─── */
-    .ann-bar {
-      background: var(--navy); color: var(--white);
-      text-align: center; padding: 10px 20px;
-      font-size: .85rem; font-weight: 600; letter-spacing: .2px;
-    }
-    .ann-bar span { color: var(--teal); }
+/* ANNOUNCEMENT BAR */
+.announcement-bar {
+  background: var(--navy);
+  color: var(--white);
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 1000;
+}
+.announcement-bar span { color: var(--gold); }
 
-    /* ── Header ─── */
-    .site-header {
-      background: var(--white); border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 200;
-      box-shadow: 0 2px 8px rgba(0,0,0,.07);
-    }
-    .header-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 24px; gap: 16px;
-    }
-    .logo-mark { font-size: 1.5rem; font-weight: 900; color: var(--navy); letter-spacing: -.5px; line-height: 1; }
-    .logo-mark .t { color: var(--teal); }
-    .logo-sub { font-size: .62rem; font-weight: 600; color: var(--grey); letter-spacing: 1.4px; text-transform: uppercase; }
-    .phone-pill {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--sky); border: 1.5px solid var(--teal);
-      border-radius: 50px; padding: 8px 16px;
-      color: var(--navy); font-weight: 800; font-size: .9rem; white-space: nowrap;
-    }
-    .phone-pill svg { width:16px; height:16px; stroke:var(--teal); fill:none; stroke-width:2.5; stroke-linecap:round; flex-shrink:0; }
-    .btn-book {
-      background: var(--teal); color: var(--white);
-      padding: 11px 22px; border-radius: var(--radius);
-      font-weight: 800; font-size: .9rem; white-space: nowrap;
-      transition: background .2s, transform .15s;
-    }
-    .btn-book:hover { background: #009bbf; transform: translateY(-1px); }
+/* STICKY HEADER */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: var(--white);
+  box-shadow: 0 2px 20px rgba(11,45,72,0.12);
+  padding: 0 24px;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  gap: 20px;
+}
+.logo { display: flex; align-items: center; gap: 0; text-decoration: none; flex-shrink: 0; }
+.logo-pool { font-size: 1.6rem; font-weight: 800; color: var(--navy); letter-spacing: -0.03em; }
+.logo-store { font-size: 1.6rem; font-weight: 800; color: var(--teal); letter-spacing: -0.03em; }
+.logo-domain { font-size: 0.8rem; font-weight: 600; color: var(--ocean); align-self: flex-end; margin-bottom: 3px; margin-left: 1px; }
+.header-phone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--sky);
+  border: 1.5px solid var(--teal);
+  border-radius: 50px;
+  padding: 8px 18px;
+  text-decoration: none;
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.header-phone:hover { background: var(--teal); color: var(--white); }
+.header-phone svg { width: 16px; height: 16px; flex-shrink: 0; }
+.header-cta {
+  background: var(--gold);
+  color: var(--navy);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 22px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-block;
+}
+.header-cta:hover { background: #e09600; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(244,168,0,0.4); }
 
-    /* ── Hero ─── */
-    .hero {
-      min-height: 560px; display: flex; align-items: center;
-      background: linear-gradient(120deg, var(--navy) 0%, #0d4a7a 50%, #0a7eb0 100%);
-      position: relative; overflow: hidden;
-    }
-    .hero::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 70% at 80% 50%, rgba(0,180,216,.18) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-inner {
-      max-width: 1200px; margin: 0 auto; padding: 80px 24px;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
-      position: relative; z-index: 2; width: 100%;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(0,180,216,.18); border: 1px solid rgba(0,180,216,.4);
-      color: var(--teal); font-size: .75rem; font-weight: 800; letter-spacing: 1.2px;
-      text-transform: uppercase; padding: 6px 14px; border-radius: 50px;
-      margin-bottom: 20px;
-    }
-    .hero h1 {
-      font-size: clamp(1.9rem, 3.8vw, 3rem); font-weight: 900;
-      color: var(--white); line-height: 1.15; margin-bottom: 20px;
-    }
-    .hero h1 em { color: var(--teal); font-style: normal; }
-    .hero p { font-size: 1.05rem; color: rgba(255,255,255,.82); margin-bottom: 36px; line-height: 1.75; max-width: 500px; }
-    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 36px; }
-    .btn-solid {
-      background: var(--teal); color: var(--white);
-      padding: 14px 30px; border-radius: var(--radius); font-weight: 800; font-size: 1rem;
-      transition: all .2s; display: inline-block;
-    }
-    .btn-solid:hover { background: #00c9f0; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,180,216,.4); }
-    .btn-ghost {
-      background: rgba(255,255,255,.12); color: var(--white);
-      border: 2px solid rgba(255,255,255,.35);
-      padding: 12px 28px; border-radius: var(--radius); font-weight: 700; font-size: 1rem;
-      transition: all .2s; display: inline-block;
-    }
-    .btn-ghost:hover { background: rgba(255,255,255,.22); }
-    .trust-strip {
-      display: flex; gap: 20px; flex-wrap: wrap;
-      font-size: .82rem; font-weight: 700; color: rgba(255,255,255,.75);
-    }
-    .trust-strip span::before { content: '✓ '; color: var(--teal); }
+/* HERO */
+.hero {
+  min-height: 100vh;
+  background: url('https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=1600&q=85') center/cover no-repeat,
+              linear-gradient(135deg, var(--navy) 0%, var(--ocean) 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 80px 24px;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, rgba(11,45,72,0.82) 0%, rgba(11,45,72,0.55) 50%, rgba(11,45,72,0.25) 100%);
+}
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.hero-content { max-width: 620px; }
+.eyebrow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,180,216,0.2);
+  border: 1.5px solid rgba(0,180,216,0.6);
+  border-radius: 50px;
+  padding: 6px 16px;
+  color: var(--teal);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 24px;
+}
+.eyebrow-badge::before { content: '★'; color: var(--gold); }
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+.hero h1 em { color: var(--teal); font-style: normal; }
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(255,255,255,0.88);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 520px;
+}
+.hero-buttons { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 48px; }
+.btn-hero-primary {
+  background: var(--teal);
+  color: var(--white);
+  padding: 18px 36px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-block;
+  box-shadow: 0 8px 32px rgba(0,180,216,0.4);
+}
+.btn-hero-primary:hover { background: #009dc0; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,180,216,0.5); }
+.btn-hero-ghost {
+  background: transparent;
+  color: var(--white);
+  padding: 18px 36px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 2px solid rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-block;
+}
+.btn-hero-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+.trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+}
+.trust-stars { display: flex; align-items: center; gap: 8px; }
+.stars { color: var(--gold); font-size: 1.1rem; letter-spacing: 2px; }
+.trust-label { color: rgba(255,255,255,0.9); font-size: 0.875rem; font-weight: 600; }
+.trust-item { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.85); font-size: 0.875rem; font-weight: 600; }
+.trust-item::before { content: '✓'; color: var(--teal); font-weight: 900; font-size: 1rem; }
 
-    /* Ripple art */
-    .hero-art { display: flex; align-items: center; justify-content: center; }
-    .ripple-wrap { position: relative; width: 320px; height: 320px; }
-    .ring {
-      position: absolute; border-radius: 50%;
-      border: 2px solid rgba(0,180,216,.35);
-      animation: pulse 3s ease-in-out infinite;
-      top: 50%; left: 50%; transform: translate(-50%, -50%);
-    }
-    .ring:nth-child(1) { width: 90px; height: 90px; background: rgba(0,180,216,.15); animation-delay: 0s; }
-    .ring:nth-child(2) { width: 160px; height: 160px; animation-delay: .4s; }
-    .ring:nth-child(3) { width: 230px; height: 230px; animation-delay: .8s; }
-    .ring:nth-child(4) { width: 300px; height: 300px; animation-delay: 1.2s; }
-    .ring-icon {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      font-size: 3.5rem; z-index: 2;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: .7; transform: translate(-50%, -50%) scale(.9); }
-      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
-    }
-
-    /* ── Trust Bar ─── */
-    .trust-bar {
-      background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-      padding: 18px 24px;
-    }
-    .trust-bar-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: flex; gap: 0; justify-content: space-around; flex-wrap: wrap;
-    }
-    .trust-item {
-      display: flex; align-items: center; gap: 10px;
-      font-size: .85rem; font-weight: 700; color: var(--navy);
-      padding: 8px 16px;
-    }
-    .trust-item .icon { font-size: 1.4rem; }
-
-    /* ── Benefits ─── */
-    .benefits { background: var(--sky); padding: 80px 24px; }
-    .section-wrap { max-width: 1200px; margin: 0 auto; }
-    .section-head { text-align: center; margin-bottom: 52px; }
-    .section-head h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; color: var(--navy); margin-bottom: 10px; }
-    .section-head p { color: var(--grey); font-size: 1rem; max-width: 520px; margin: 0 auto; }
-    .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-    .benefit-card {
-      background: var(--white); border-radius: 14px; padding: 32px 28px;
-      box-shadow: var(--shadow); border-top: 4px solid var(--teal);
-      transition: transform .2s, box-shadow .2s;
-    }
-    .benefit-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-    .benefit-icon { font-size: 2.4rem; margin-bottom: 16px; }
-    .benefit-card h3 { font-size: 1.1rem; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
-    .benefit-card p { font-size: .92rem; color: var(--grey); line-height: 1.7; }
-    .u-value-badge {
-      display: inline-block; background: #dcfce7; color: #15803d;
-      font-size: .75rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; margin-top: 10px;
-    }
-
-    /* ── Configurator ─── */
-    .configurator { background: var(--white); padding: 80px 24px; }
-    .config-card {
-      max-width: 800px; margin: 0 auto; background: var(--white);
-      border-radius: 18px; box-shadow: 0 12px 48px rgba(0,0,0,.12);
-      border: 1px solid var(--border); overflow: hidden;
-    }
-    .config-header {
-      background: linear-gradient(120deg, var(--navy), var(--ocean));
-      padding: 32px 40px; text-align: center; color: var(--white);
-    }
-    .config-header h2 { font-size: 1.55rem; font-weight: 900; margin-bottom: 6px; }
-    .config-header p { font-size: .9rem; color: rgba(255,255,255,.8); }
-    .progress-bar-wrap { padding: 0 40px; background: var(--offwhite); border-bottom: 1px solid var(--border); }
-    .progress-steps { display: flex; align-items: center; justify-content: center; padding: 20px 0; gap: 0; }
-    .prog-step {
-      display: flex; align-items: center; gap: 10px; font-size: .82rem; font-weight: 700;
-      color: var(--grey);
-    }
-    .prog-step.active { color: var(--teal); }
-    .prog-step.done { color: var(--green); }
-    .prog-num {
-      width: 30px; height: 30px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: .8rem; font-weight: 900;
-      border: 2px solid var(--border); background: var(--white); flex-shrink: 0;
-    }
-    .prog-step.active .prog-num { border-color: var(--teal); color: var(--teal); background: var(--sky); }
-    .prog-step.done .prog-num { border-color: var(--green); background: #dcfce7; color: var(--green); }
-    .prog-line { flex: 1; height: 2px; background: var(--border); margin: 0 12px; max-width: 80px; }
-    .prog-line.done-line { background: var(--green); }
-
-    .config-body { padding: 36px 40px; }
-    .step-panel { display: none; }
-    .step-panel.active { display: block; }
-    .step-title { font-size: 1.1rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
-    .step-sub { font-size: .88rem; color: var(--grey); margin-bottom: 24px; }
-
-    .group-label { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); margin-bottom: 10px; margin-top: 22px; }
-    .group-label:first-of-type { margin-top: 0; }
-
-    .radio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .radio-grid.cols3 { grid-template-columns: repeat(3, 1fr); }
-    .radio-grid.cols2 { grid-template-columns: repeat(2, 1fr); }
-    .check-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-
-    .option-card {
-      border: 2px solid var(--border); border-radius: 10px; padding: 14px 16px;
-      cursor: pointer; transition: all .15s; position: relative;
-      background: var(--white); user-select: none;
-    }
-    .option-card:hover { border-color: var(--teal); background: var(--sky); }
-    .option-card.selected { border-color: var(--teal); background: var(--sky); }
-    .option-card.selected::after {
-      content: '✓'; position: absolute; top: 8px; right: 10px;
-      color: var(--teal); font-weight: 900; font-size: .9rem;
-    }
-    .option-card .oc-label { font-size: .92rem; font-weight: 700; color: var(--navy); }
-    .option-card .oc-sub { font-size: .78rem; color: var(--grey); margin-top: 2px; }
-    .option-card .oc-icon { font-size: 1.4rem; margin-bottom: 8px; }
-    .popular-tag {
-      position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
-      background: var(--gold); color: var(--navy); font-size: .65rem; font-weight: 900;
-      padding: 2px 10px; border-radius: 20px; letter-spacing: .5px; text-transform: uppercase;
-      white-space: nowrap;
-    }
-    .option-card.has-popular { margin-top: 10px; }
-
-    /* Calendar */
-    .cal-wrap { margin-top: 0; }
-    .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .cal-month-name { font-size: 1rem; font-weight: 800; color: var(--navy); }
-    .cal-nav { background: var(--sky); border: 1px solid var(--border); border-radius: 8px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--navy); transition: background .15s; }
-    .cal-nav:hover { background: var(--teal); color: var(--white); }
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-    .cal-day-header { text-align: center; font-size: .72rem; font-weight: 800; color: var(--grey); padding: 6px 0; text-transform: uppercase; letter-spacing: .5px; }
-    .cal-day {
-      text-align: center; font-size: .85rem; font-weight: 600;
-      border-radius: 8px; padding: 8px 4px; cursor: default;
-      transition: all .15s;
-    }
-    .cal-day.empty { }
-    .cal-day.available { background: var(--sky); color: var(--navy); cursor: pointer; border: 1px solid rgba(0,180,216,.3); }
-    .cal-day.available:hover { background: var(--teal); color: var(--white); }
-    .cal-day.selected-day { background: var(--teal); color: var(--white); font-weight: 900; }
-    .cal-day.past, .cal-day.unavailable { color: #c4c9d0; }
-
-    .time-slots { margin-top: 20px; }
-    .time-label { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--teal); margin-bottom: 10px; }
-    .slots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .slot-btn {
-      border: 2px solid var(--border); border-radius: 8px; padding: 10px;
-      text-align: center; font-size: .88rem; font-weight: 700; color: var(--navy);
-      cursor: pointer; transition: all .15s; background: var(--white);
-    }
-    .slot-btn:hover { border-color: var(--teal); background: var(--sky); }
-    .slot-btn.selected { border-color: var(--teal); background: var(--teal); color: var(--white); }
-
-    /* Contact form */
-    .contact-form { margin-top: 28px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: .8rem; font-weight: 700; color: var(--navy); }
-    .form-group input, .form-group textarea {
-      border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 14px;
-      font-size: .92rem; font-family: inherit; outline: none; transition: border-color .2s;
-      background: var(--white); color: var(--dark);
-    }
-    .form-group input:focus, .form-group textarea:focus { border-color: var(--teal); }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-
-    /* Step nav buttons */
-    .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; gap: 14px; }
-    .btn-next {
-      background: var(--teal); color: var(--white);
-      padding: 13px 32px; border-radius: var(--radius); font-weight: 800; font-size: .95rem;
-      transition: all .2s; margin-left: auto;
-    }
-    .btn-next:hover { background: #009bbf; transform: translateY(-1px); }
-    .btn-back {
-      background: var(--offwhite); color: var(--grey); border: 1.5px solid var(--border);
-      padding: 13px 24px; border-radius: var(--radius); font-weight: 700; font-size: .95rem;
-      transition: all .2s;
-    }
-    .btn-back:hover { border-color: var(--navy); color: var(--navy); }
-    .btn-submit {
-      width: 100%; background: var(--teal); color: var(--white);
-      padding: 16px; border-radius: var(--radius); font-weight: 900; font-size: 1.05rem;
-      margin-top: 22px; transition: all .2s; letter-spacing: .3px;
-    }
-    .btn-submit:hover { background: #009bbf; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,180,216,.35); }
-    .error-msg { color: #dc2626; font-size: .82rem; font-weight: 600; margin-top: 6px; display: none; }
-    .error-msg.show { display: block; }
-
-    /* Confirmation */
-    .confirm-panel {
-      text-align: center; padding: 20px 0;
-    }
-    .confirm-icon {
-      width: 72px; height: 72px; background: #dcfce7; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.2rem; margin: 0 auto 20px;
-    }
-    .confirm-panel h3 { font-size: 1.6rem; font-weight: 900; color: var(--navy); margin-bottom: 8px; }
-    .confirm-panel p { color: var(--grey); line-height: 1.7; margin-bottom: 16px; }
-    .confirm-detail {
-      background: var(--sky); border-radius: 10px; padding: 16px 20px;
-      display: inline-block; text-align: left; margin: 12px 0;
-    }
-    .confirm-detail .cd-row { font-size: .9rem; margin-bottom: 4px; }
-    .confirm-detail .cd-row strong { color: var(--navy); }
-
-    /* ── How It Works ─── */
-    .how-it-works { background: var(--offwhite); padding: 80px 24px; }
-    .steps-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; margin-top: 48px; }
-    .steps-row::before {
-      content: '';
-      position: absolute; top: 28px; left: 12.5%; right: 12.5%; height: 2px;
-      background: var(--border); z-index: 0;
-    }
-    .step-item { text-align: center; padding: 0 16px; position: relative; z-index: 1; }
-    .step-num {
-      width: 56px; height: 56px; border-radius: 50%;
-      background: var(--teal); color: var(--white);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem; font-weight: 900; margin: 0 auto 16px;
-      box-shadow: 0 4px 12px rgba(0,180,216,.35);
-    }
-    .step-item h4 { font-size: .98rem; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
-    .step-item p { font-size: .85rem; color: var(--grey); line-height: 1.65; }
-
-    /* ── Testimonials ─── */
-    .testimonials { background: var(--navy); padding: 80px 24px; }
-    .testimonials .section-head h2 { color: var(--white); }
-    .testimonials .section-head p { color: rgba(255,255,255,.7); }
-    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .testi-card {
-      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
-      border-radius: 14px; padding: 28px; transition: background .2s;
-    }
-    .testi-card:hover { background: rgba(255,255,255,.14); }
-    .stars { color: var(--gold); font-size: 1.1rem; margin-bottom: 12px; letter-spacing: 2px; }
-    .testi-text { color: rgba(255,255,255,.88); font-size: .93rem; line-height: 1.75; margin-bottom: 16px; font-style: italic; }
-    .testi-author { font-size: .82rem; font-weight: 800; color: var(--teal); }
-
-    /* ── FAQ ─── */
-    .faq { background: var(--sky); padding: 80px 24px; }
-    .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
-    .faq-item { background: var(--white); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; }
-    .faq-q {
-      width: 100%; text-align: left; padding: 18px 22px; font-size: .97rem; font-weight: 700; color: var(--navy);
-      background: none; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    }
-    .faq-q:hover { background: var(--sky); }
-    .faq-arrow { font-size: .9rem; transition: transform .25s; flex-shrink: 0; color: var(--teal); }
-    .faq-item.open .faq-arrow { transform: rotate(180deg); }
-    .faq-a {
-      max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s ease;
-      font-size: .9rem; color: var(--grey); line-height: 1.75;
-      padding: 0 22px;
-    }
-    .faq-item.open .faq-a { max-height: 300px; padding: 0 22px 18px; }
-
-    /* ── Final CTA ─── */
-    .final-cta {
-      background: linear-gradient(120deg, var(--teal), var(--ocean));
-      padding: 72px 24px; text-align: center;
-    }
-    .final-cta h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 900; color: var(--white); margin-bottom: 14px; }
-    .final-cta p { font-size: 1.05rem; color: rgba(255,255,255,.88); margin-bottom: 32px; max-width: 520px; margin-left: auto; margin-right: auto; }
-    .btn-cta-white {
-      display: inline-block; background: var(--white); color: var(--teal);
-      padding: 16px 40px; border-radius: var(--radius); font-weight: 900; font-size: 1.05rem;
-      transition: all .2s; box-shadow: 0 4px 16px rgba(0,0,0,.2);
-    }
-    .btn-cta-white:hover { background: var(--sky); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
-
-    /* ── Footer ─── */
-    footer {
-      background: var(--navy); color: rgba(255,255,255,.7);
-      padding: 40px 24px 28px;
-    }
-    .footer-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
-    }
-    .footer-logo .logo-mark { font-size: 1.3rem; }
-    .footer-logo .logo-sub { color: rgba(255,255,255,.45); }
-    .footer-phone { font-size: .95rem; font-weight: 700; color: var(--teal); }
-    .footer-links { display: flex; gap: 20px; font-size: .82rem; }
-    .footer-links a { color: rgba(255,255,255,.6); transition: color .15s; }
-    .footer-links a:hover { color: var(--teal); }
-    .footer-copy { width: 100%; text-align: center; font-size: .78rem; border-top: 1px solid rgba(255,255,255,.1); margin-top: 24px; padding-top: 20px; }
-
-    /* ── Responsive ─── */
-    @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-art { display: none; }
-      .benefits-grid { grid-template-columns: 1fr; }
-      .testi-grid { grid-template-columns: 1fr; }
-      .steps-row { grid-template-columns: 1fr 1fr; gap: 28px; }
-      .steps-row::before { display: none; }
-      .check-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 640px) {
-      .header-inner { padding: 12px 16px; }
-      .phone-pill { display: none; }
-      .config-header { padding: 24px 20px; }
-      .config-body { padding: 24px 20px; }
-      .progress-bar-wrap { padding: 0 20px; }
-      .form-row { grid-template-columns: 1fr; }
-      .radio-grid, .radio-grid.cols3 { grid-template-columns: 1fr 1fr; }
-      .check-grid { grid-template-columns: 1fr 1fr; }
-      .slots-grid { grid-template-columns: repeat(3, 1fr); }
-      .steps-row { grid-template-columns: 1fr; }
-      .trust-bar-inner { gap: 0; }
-      .trust-item { font-size: .8rem; padding: 6px 10px; }
-      .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
-    }
-  </style>
+/* SOCIAL PROOF STRIP */
+.stats-strip {
+  background: var(--white);
+  padding: 70px 24px;
+  border-bottom: 1px solid rgba(0,180,216,0.15);
+}
+.stats-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  text-align: center;
+}
+.stat-item {}
+.stat-number {
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.stat-number span { color: var(--teal); }
+.stat-label {
+  font-size: 0.95rem;
+  color: var(--text-mid);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+</style>
 </head>
 <body>
 
-<!-- Announcement Bar -->
-<div class="ann-bar">
-  🏊 <span>Limited Expert Consultation Slots Available This Month</span> — Book Your FREE Session Now
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement-bar">
+  🏊 Only <span>12 consultation slots remaining</span> this month — Book yours <span>FREE</span> today
 </div>
 
-<!-- Header -->
+<!-- STICKY HEADER -->
 <header class="site-header">
   <div class="header-inner">
-    <div class="logo-footer footer-logo">
-      <div class="logo-mark">Pool<span class="t">Store</span><span style="color:var(--grey);font-weight:600;font-size:1rem">.co.uk</span></div>
-      <div class="logo-sub">UK Pool Experts Since 1999</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:14px;margin-left:auto;">
-      <a href="tel:02380734922" class="phone-pill">
-        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-        02380 734922
-      </a>
-      <a href="#configurator" class="btn-book">Book Free Consultation</a>
-    </div>
+    <a href="#" class="logo">
+      <span class="logo-pool">Pool</span><span class="logo-store">Store</span><span class="logo-domain">.co.uk</span>
+    </a>
+    <a href="tel:02380734922" class="header-phone">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+      02380 734922
+    </a>
+    <a href="#configurator" class="header-cta">Book Free Consultation &rarr;</a>
   </div>
 </header>
 
-<!-- Hero -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-content">
-      <div class="hero-badge">Exclusive &middot; Free Expert Consultation</div>
-      <h1>Your Dream Poly Pool —<br><em>Designed Around You</em></h1>
-      <p>Our poly panel pools heat up faster, stay warmer longer, and can be installed in as little as 2 weeks. Speak to a PoolStore expert — zero pressure, just honest advice.</p>
-      <div class="hero-btns">
-        <a href="#configurator" class="btn-solid">Book My Free Consultation</a>
-        <a href="#how-it-works" class="btn-ghost">See How It Works</a>
+      <div class="eyebrow-badge">UK's #1 Pool Store Since 1999</div>
+      <h1>The Pool You've Always Dreamed Of &mdash; <em>In Your Garden By Summer</em></h1>
+      <p class="hero-sub">Poly pools heat up faster, stay warm longer, and most are installed in just 2 weeks. Get expert advice &mdash; completely free, zero pressure.</p>
+      <div class="hero-buttons">
+        <a href="#configurator" class="btn-hero-primary">Get My Free Expert Consultation</a>
+        <a href="#desire" class="btn-hero-ghost">See How It Works &darr;</a>
       </div>
-      <div class="trust-strip">
-        <span>UK's #1 Since 1999</span>
-        <span>8× Better Heat Retention</span>
-        <span>Installed in 2–3 Weeks</span>
-        <span>No Hard Sell Guarantee</span>
-      </div>
-    </div>
-    <div class="hero-art">
-      <div class="ripple-wrap">
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring-icon">🏊</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Trust Bar -->
-<div class="trust-bar">
-  <div class="trust-bar-inner">
-    <div class="trust-item"><span class="icon">🏆</span> 26+ Years in Business</div>
-    <div class="trust-item"><span class="icon">😊</span> 10,000+ Happy Customers</div>
-    <div class="trust-item"><span class="icon">🎓</span> Expert Advice Guaranteed</div>
-    <div class="trust-item"><span class="icon">🚚</span> UK Nationwide Delivery</div>
-    <div class="trust-item"><span class="icon">🤝</span> No Hard Sell Promise</div>
-  </div>
-</div>
-
-<!-- Benefits -->
-<section class="benefits">
-  <div class="section-wrap">
-    <div class="section-head">
-      <h2>Why Choose a Poly Pool?</h2>
-      <p>Polypool panel systems are the UK's leading choice for fast, efficient, beautiful swimming pools.</p>
-    </div>
-    <div class="benefits-grid">
-      <div class="benefit-card">
-        <div class="benefit-icon">🌡️</div>
-        <h3>Exceptional Heat Retention</h3>
-        <p>8× more efficient than double-glazing. Our interlocking insulated panels achieve a U-value of 0.18 W/m²K — exceeding UK Building Regulations (Part L requires 0.25). Your pool heats up fast and stays warm longer.</p>
-        <div class="u-value-badge">U-value: 0.18 W/m²K ✓</div>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">⚡</div>
-        <h3>Incredibly Quick to Build</h3>
-        <p>A 10m × 5m pool structure can be assembled in under half a day thanks to the unique interlocking panel system. Most customers go from delivery to their first swim within just 2–3 weeks.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">📐</div>
-        <h3>Any Size, Any Shape</h3>
-        <p>Rectangular, L-shape, or fully bespoke. Indoor, outdoor, inground or semi-above-ground. We configure every pool to your exact space, budget and vision — no compromises.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Configurator -->
-<section class="configurator" id="configurator">
-  <div class="section-wrap">
-    <div class="section-head">
-      <h2>Get Your Free Expert Consultation</h2>
-      <p>Answer a few quick questions so our experts can give you the most relevant advice for your project.</p>
-    </div>
-    <div class="config-card">
-      <div class="config-header">
-        <h2>Configure Your Pool &amp; Book Your Slot</h2>
-        <p>Takes 2 minutes &nbsp;·&nbsp; No obligation &nbsp;·&nbsp; Free expert advice</p>
-      </div>
-
-      <!-- Progress -->
-      <div class="progress-bar-wrap">
-        <div class="progress-steps">
-          <div class="prog-step active" id="prog1">
-            <div class="prog-num" id="pnum1">1</div>
-            <span>Your Pool</span>
-          </div>
-          <div class="prog-line" id="pline1"></div>
-          <div class="prog-step" id="prog2">
-            <div class="prog-num" id="pnum2">2</div>
-            <span>Add-Ons</span>
-          </div>
-          <div class="prog-line" id="pline2"></div>
-          <div class="prog-step" id="prog3">
-            <div class="prog-num" id="pnum3">3</div>
-            <span>Book Slot</span>
-          </div>
+      <div class="trust-row">
+        <div class="trust-stars">
+          <div class="stars">★★★★★</div>
+          <div class="trust-label">4.9/5 from 847 reviews</div>
         </div>
-      </div>
-
-      <div class="config-body">
-
-        <!-- Step 1 -->
-        <div class="step-panel active" id="step1">
-          <div class="step-title">Step 1 — Tell Us About Your Pool</div>
-          <div class="step-sub">Select the options that best match your vision. Don't worry if you're unsure — our experts will help.</div>
-
-          <div class="group-label">Pool Size</div>
-          <div class="radio-grid" data-group="size">
-            <div class="option-card" data-value="compact">
-              <div class="oc-icon">🏠</div>
-              <div class="oc-label">Up to 6m × 3m</div>
-              <div class="oc-sub">Compact — great for smaller gardens</div>
-            </div>
-            <div class="option-card has-popular" data-value="medium" style="position:relative;">
-              <div class="popular-tag">⭐ Most Popular</div>
-              <div class="oc-icon">🏡</div>
-              <div class="oc-label">8m × 4m</div>
-              <div class="oc-sub">Family swim &amp; exercise</div>
-            </div>
-            <div class="option-card" data-value="large">
-              <div class="oc-icon">🏰</div>
-              <div class="oc-label">10m × 5m</div>
-              <div class="oc-sub">Full family &amp; entertaining</div>
-            </div>
-            <div class="option-card" data-value="custom">
-              <div class="oc-icon">📏</div>
-              <div class="oc-label">Custom Size</div>
-              <div class="oc-sub">We'll design it around you</div>
-            </div>
-          </div>
-
-          <div class="group-label">Location</div>
-          <div class="radio-grid cols2" data-group="location">
-            <div class="option-card" data-value="outdoor">
-              <div class="oc-icon">☀️</div>
-              <div class="oc-label">Outdoor</div>
-              <div class="oc-sub">Garden or patio installation</div>
-            </div>
-            <div class="option-card" data-value="indoor">
-              <div class="oc-icon">🏛️</div>
-              <div class="oc-label">Indoor</div>
-              <div class="oc-sub">Pool room or building</div>
-            </div>
-          </div>
-
-          <div class="group-label">Shape</div>
-          <div class="radio-grid cols3" data-group="shape">
-            <div class="option-card" data-value="rectangular">
-              <div class="oc-icon">▬</div>
-              <div class="oc-label">Rectangular</div>
-            </div>
-            <div class="option-card" data-value="lshape">
-              <div class="oc-icon">⌐</div>
-              <div class="oc-label">L-Shape</div>
-            </div>
-            <div class="option-card" data-value="custom-shape">
-              <div class="oc-icon">🔷</div>
-              <div class="oc-label">Custom Shape</div>
-            </div>
-          </div>
-
-          <div id="err1" class="error-msg">Please select at least one option in each group above.</div>
-          <div class="step-nav">
-            <button class="btn-next" onclick="nextStep(1)">Next: Add-Ons &rarr;</button>
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="step-panel" id="step2">
-          <div class="step-title">Step 2 — Any Add-Ons? (Optional)</div>
-          <div class="step-sub">Select anything you're interested in — our expert will cover everything on the call.</div>
-
-          <div class="check-grid" data-group="addons">
-            <div class="option-card" data-value="heating">
-              <div class="oc-icon">🔥</div>
-              <div class="oc-label">Pool Heating</div>
-              <div class="oc-sub">Heat pump or solar</div>
-            </div>
-            <div class="option-card" data-value="cover">
-              <div class="oc-icon">🛡️</div>
-              <div class="oc-label">Safety Cover</div>
-              <div class="oc-sub">Child-safe roller cover</div>
-            </div>
-            <div class="option-card" data-value="lighting">
-              <div class="oc-icon">💡</div>
-              <div class="oc-label">LED Lighting</div>
-              <div class="oc-sub">Colour underwater lights</div>
-            </div>
-            <div class="option-card" data-value="chemicals">
-              <div class="oc-icon">🧪</div>
-              <div class="oc-label">Chemical Starter Pack</div>
-              <div class="oc-sub">Everything to open the pool</div>
-            </div>
-            <div class="option-card" data-value="solar-cover">
-              <div class="oc-icon">☀️</div>
-              <div class="oc-label">Roller &amp; Solar Cover</div>
-              <div class="oc-sub">Retain heat, reduce costs</div>
-            </div>
-            <div class="option-card" data-value="install">
-              <div class="oc-icon">🔧</div>
-              <div class="oc-label">Installation Support</div>
-              <div class="oc-sub">Full on-site support</div>
-            </div>
-          </div>
-
-          <div class="step-nav">
-            <button class="btn-back" onclick="prevStep(2)">&larr; Back</button>
-            <button class="btn-next" onclick="nextStep(2)">Next: Book Your Slot &rarr;</button>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="step-panel" id="step3">
-          <div class="step-title">Step 3 — Choose Your Consultation Slot</div>
-          <div class="step-sub">Pick a date and time that suits you. Our expert will call you to confirm within 1 hour.</div>
-
-          <div class="cal-wrap">
-            <div class="cal-header">
-              <button class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
-              <div class="cal-month-name" id="calMonthName">March 2026</div>
-              <button class="cal-nav" onclick="changeMonth(1)">&#8250;</button>
-            </div>
-            <div class="cal-grid" id="calGrid">
-              <!-- Rendered by JS -->
-            </div>
-          </div>
-
-          <div class="time-slots">
-            <div class="time-label">Available Times</div>
-            <div class="slots-grid" id="slotsGrid">
-              <button class="slot-btn" onclick="selectSlot(this,'9:00am')">9:00am</button>
-              <button class="slot-btn" onclick="selectSlot(this,'10:00am')">10:00am</button>
-              <button class="slot-btn" onclick="selectSlot(this,'11:00am')">11:00am</button>
-              <button class="slot-btn" onclick="selectSlot(this,'2:00pm')">2:00pm</button>
-              <button class="slot-btn" onclick="selectSlot(this,'3:00pm')">3:00pm</button>
-              <button class="slot-btn" onclick="selectSlot(this,'4:00pm')">4:00pm</button>
-            </div>
-          </div>
-
-          <div class="contact-form">
-            <div class="time-label" style="margin-top:24px;">Your Details</div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="fname">First Name *</label>
-                <input type="text" id="fname" placeholder="John">
-              </div>
-              <div class="form-group">
-                <label for="lname">Last Name *</label>
-                <input type="text" id="lname" placeholder="Smith">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="email">Email Address *</label>
-                <input type="email" id="email" placeholder="john@example.com">
-              </div>
-              <div class="form-group">
-                <label for="phone">Phone Number *</label>
-                <input type="tel" id="phone" placeholder="07700 900000">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="msg">Anything else you'd like us to know? (optional)</label>
-              <textarea id="msg" placeholder="e.g. garden dimensions, budget, timescale..."></textarea>
-            </div>
-          </div>
-
-          <div id="err3" class="error-msg">Please select a date, time, and fill in your name, email and phone.</div>
-
-          <button class="btn-submit" onclick="submitForm()">Confirm My Free Consultation 🏊</button>
-
-          <div class="step-nav" style="margin-top:16px;">
-            <button class="btn-back" onclick="prevStep(3)">&larr; Back</button>
-          </div>
-        </div>
-
-        <!-- Step 4: Confirmation -->
-        <div class="step-panel" id="step4">
-          <div class="confirm-panel">
-            <div class="confirm-icon">✅</div>
-            <h3>You're Booked In!</h3>
-            <p>Thank you — your free consultation is confirmed. Our expert will call you to confirm the appointment within 1 business hour.</p>
-            <div class="confirm-detail">
-              <div class="cd-row"><strong>Date:</strong> <span id="confirmDate">—</span></div>
-              <div class="cd-row"><strong>Time:</strong> <span id="confirmTime">—</span></div>
-              <div class="cd-row"><strong>Name:</strong> <span id="confirmName">—</span></div>
-            </div>
-            <p style="margin-top:18px;font-size:.88rem;color:var(--grey);">
-              No hard sell — just honest, expert advice from the UK's longest-established pool store.<br>
-              Questions before your call? Ring us on <a href="tel:02380734922" style="color:var(--teal);font-weight:700;">02380 734922</a>.
-            </p>
-          </div>
-        </div>
-
-      </div><!-- config-body -->
-    </div><!-- config-card -->
-  </div>
-</section>
-
-<!-- How It Works -->
-<section class="how-it-works" id="how-it-works">
-  <div class="section-wrap">
-    <div class="section-head">
-      <h2>From First Call to First Swim</h2>
-      <p>A simple, supported journey from consultation to completion.</p>
-    </div>
-    <div class="steps-row">
-      <div class="step-item">
-        <div class="step-num">1</div>
-        <h4>Free Consultation</h4>
-        <p>We learn about your space, budget and vision — no pressure, just expert guidance.</p>
-      </div>
-      <div class="step-item">
-        <div class="step-num">2</div>
-        <h4>Custom Design</h4>
-        <p>We configure your perfect poly pool spec — size, shape, depth and all the extras.</p>
-      </div>
-      <div class="step-item">
-        <div class="step-num">3</div>
-        <h4>Fast Delivery</h4>
-        <p>Panels and equipment delivered direct to your door across the UK.</p>
-      </div>
-      <div class="step-item">
-        <div class="step-num">4</div>
-        <h4>You're Swimming</h4>
-        <p>Most pools are fully installed and ready to enjoy within just 2–3 weeks.</p>
+        <div class="trust-item">No Hard Sell</div>
+        <div class="trust-item">UK Experts</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Testimonials -->
-<section class="testimonials">
-  <div class="section-wrap">
-    <div class="section-head">
-      <h2>What Our Customers Say</h2>
-      <p>Thousands of families across the UK have trusted PoolStore to build their perfect pool.</p>
+<!-- SOCIAL PROOF STRIP -->
+<section class="stats-strip" id="stats">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-number"><span class="counter" data-target="26" data-suffix="+">0+</span></div>
+      <div class="stat-label">Years of expertise</div>
     </div>
-    <div class="testi-grid">
-      <div class="testi-card">
-        <div class="stars">★★★★★</div>
-        <div class="testi-text">"We went from enquiry to swimming in just 3 weeks. The insulation is incredible — our pool stays warm even in October. Couldn't be happier."</div>
-        <div class="testi-author">— James T., Hampshire</div>
-      </div>
-      <div class="testi-card">
-        <div class="stars">★★★★★</div>
-        <div class="testi-text">"The PoolStore team gave us brilliant, no-pressure advice. The poly pool system is exactly what we wanted and the build quality is superb."</div>
-        <div class="testi-author">— Sarah M., Surrey</div>
-      </div>
-      <div class="testi-card">
-        <div class="stars">★★★★★</div>
-        <div class="testi-text">"Installed it ourselves with a mate over a weekend. The instructions and phone support from PoolStore were absolutely fantastic throughout."</div>
-        <div class="testi-author">— Mark D., Cheshire</div>
-      </div>
+    <div class="stat-item">
+      <div class="stat-number"><span class="counter" data-target="10000" data-suffix="+" data-prefix="">0+</span></div>
+      <div class="stat-label">Happy pool owners</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" style="color:var(--teal)">2&ndash;3 <span style="font-size:1.5rem;color:var(--navy)">Wks</span></div>
+      <div class="stat-label">Average install time</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number"><span class="counter" data-target="8" data-suffix="&times;">0&times;</span></div>
+      <div class="stat-label">Better heat retention</div>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
-<section class="faq">
-  <div class="section-wrap">
-    <div class="section-head">
-      <h2>Common Questions</h2>
-      <p>Everything you need to know before your consultation.</p>
-    </div>
-    <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          What's included in a poly pool kit?
-          <span class="faq-arrow">▼</span>
-        </button>
-        <div class="faq-a">A poly pool kit includes all the insulated polymer panels to form the pool shell, plus flow fittings, pipework, filtration system, liner, and pool cover. You can also add heating, LED lighting, a roller cover, and chemical starter packs — our expert will walk you through exactly what suits your project.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          How long does installation take?
-          <span class="faq-arrow">▼</span>
-        </button>
-        <div class="faq-a">The unique interlocking panel system means a 10m × 5m pool structure can be assembled in under half a day. For a typical outdoor build, most customers are swimming within 2–3 weeks of delivery. Indoor builds may take a little longer depending on the building work involved.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Do I need planning permission?
-          <span class="faq-arrow">▼</span>
-        </button>
-        <div class="faq-a">In most cases, outdoor swimming pools in domestic gardens don't require planning permission under permitted development rights — but this depends on your property, location, and local authority rules. Indoor pools may require building regulations approval. Our experts will advise you on this during your free consultation.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          What depth can the pool be?
-          <span class="faq-arrow">▼</span>
-        </button>
-        <div class="faq-a">Standard poly pool panels support a constant water depth of 1 metre. For greater depth, a hopper or wedge shape can be built into a reinforced pool floor — our team can advise on the best approach for your needs.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          Is it suitable for indoor use?
-          <span class="faq-arrow">▼</span>
-        </button>
-        <div class="faq-a">Absolutely. Polypool panels are designed for both indoor and outdoor installations. The exceptional U-value of 0.18 W/m²K actually exceeds the UK Building Regulations Part L requirement for indoor pools (0.25 W/m²K), making it the perfect choice for pool rooms and leisure facilities.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Final CTA -->
-<section class="final-cta">
-  <h2>Ready to Build Your Dream Pool?</h2>
-  <p>Book your FREE no-obligation consultation today. Our UK-based experts are ready to help — no hard sell, just honest advice.</p>
-  <a href="#configurator" class="btn-cta-white">Book My Free Consultation</a>
-</section>
-
-<!-- Footer -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-logo">
-      <div class="logo-mark">Pool<span class="t">Store</span><span style="color:rgba(255,255,255,.4);font-weight:600;font-size:.95rem">.co.uk</span></div>
-      <div class="logo-sub">UK Pool Experts Since 1999</div>
-    </div>
-    <div class="footer-phone">📞 02380 734922</div>
-    <div class="footer-links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms</a>
-      <a href="#">Contact</a>
-    </div>
-  </div>
-  <div class="footer-copy">© 2026 PoolStore.co.uk — UK Pool Experts Since 1999. All rights reserved.</div>
-</footer>
-
-<script>
-  // ── State ────────────────────────────────
-  var currentStep = 1;
-  var selectedDate = null;
-  var selectedTime = null;
-  var calYear = 2026, calMonth = 2; // 0-indexed: March = 2
-
-  // Available days for each month (1-indexed day of month)
-  // For March 2026 (month index 2)
-  var availableDays = {
-    '2026-2': [3,5,9,10,12,16,17,19,23,24,26],
-    '2026-3': [2,7,8,14,15,21,22,28],
-    '2026-4': [1,6,8,13,14,16,20,21,27,28]
-  };
-
-  // ── Step Wizard ──────────────────────────
-  function nextStep(from) {
-    if (from === 1) {
-      var groups = document.querySelectorAll('#step1 [data-group]');
-      var valid = true;
-      groups.forEach(function(g) {
-        if (!g.querySelector('.option-card.selected')) valid = false;
-      });
-      if (!valid) {
-        document.getElementById('err1').classList.add('show');
-        return;
-      }
-      document.getElementById('err1').classList.remove('show');
-    }
-    setStep(from + 1);
-  }
-
-  function prevStep(from) { setStep(from - 1); }
-
-  function setStep(n) {
-    document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
-    document.getElementById('step' + n).classList.add('active');
-    currentStep = n;
-    updateProgress(n);
-    window.scrollTo({ top: document.getElementById('configurator').offsetTop - 80, behavior: 'smooth' });
-  }
-
-  function updateProgress(n) {
-    for (var i = 1; i <= 3; i++) {
-      var prog = document.getElementById('prog' + i);
-      var pnum = document.getElementById('pnum' + i);
-      prog.classList.remove('active', 'done');
-      if (i < n) { prog.classList.add('done'); pnum.textContent = '✓'; }
-      else if (i === n) { prog.classList.add('active'); pnum.textContent = i; }
-      else { pnum.textContent = i; }
-    }
-    for (var j = 1; j <= 2; j++) {
-      var line = document.getElementById('pline' + j);
-      if (line) {
-        line.classList.toggle('done-line', j < n);
-      }
-    }
-  }
-
-  // ── Option Cards ─────────────────────────
-  document.querySelectorAll('[data-group]').forEach(function(group) {
-    var isCheckbox = group.classList.contains('check-grid');
-    group.querySelectorAll('.option-card').forEach(function(card) {
-      card.addEventListener('click', function() {
-        if (isCheckbox) {
-          card.classList.toggle('selected');
-        } else {
-          group.querySelectorAll('.option-card').forEach(function(c) { c.classList.remove('selected'); });
-          card.classList.add('selected');
-        }
-      });
-    });
-  });
-
-  // ── Calendar ─────────────────────────────
-  var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-  function renderCalendar() {
-    var grid = document.getElementById('calGrid');
-    var key = calYear + '-' + calMonth;
-    var avail = availableDays[key] || [];
-    var today = new Date();
-
-    document.getElementById('calMonthName').textContent = monthNames[calMonth] + ' ' + calYear;
-
-    // Day headers
-    var headers = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-    var html = headers.map(function(d) { return '<div class="cal-day-header">' + d + '</div>'; }).join('');
-
-    // First day of month (0=Sun...6=Sat → convert to Mon-based)
-    var firstDay = new Date(calYear, calMonth, 1).getDay();
-    firstDay = (firstDay + 6) % 7; // Mon=0
-
-    var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-
-    for (var i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
-
-    for (var d = 1; d <= daysInMonth; d++) {
-      var dayOfWeek = (firstDay + d - 1) % 7; // 0=Mon, 5=Sat, 6=Sun
-      var isWeekend = dayOfWeek >= 5;
-      var dateObj = new Date(calYear, calMonth, d);
-      var isPast = dateObj < today && !(dateObj.toDateString() === today.toDateString());
-      var isAvail = avail.indexOf(d) !== -1 && !isWeekend && !isPast;
-      var isSel = selectedDate && selectedDate.d === d && selectedDate.m === calMonth && selectedDate.y === calYear;
-
-      var cls = 'cal-day';
-      if (isSel) cls += ' selected-day';
-      else if (isAvail) cls += ' available';
-      else if (isPast || isWeekend) cls += ' past';
-      else cls += ' unavailable';
-
-      var onclick = isAvail || isSel ? ' onclick="selectDate(' + d + ')"' : '';
-      html += '<div class="' + cls + '"' + onclick + '>' + d + '</div>';
-    }
-
-    grid.innerHTML = html;
-  }
-
-  function changeMonth(dir) {
-    calMonth += dir;
-    if (calMonth > 11) { calMonth = 0; calYear++; }
-    if (calMonth < 0) { calMonth = 11; calYear--; }
-    renderCalendar();
-  }
-
-  function selectDate(d) {
-    selectedDate = { d: d, m: calMonth, y: calYear };
-    renderCalendar();
-  }
-
-  function selectSlot(btn, time) {
-    document.querySelectorAll('.slot-btn').forEach(function(b) { b.classList.remove('selected'); });
-    btn.classList.add('selected');
-    selectedTime = time;
-  }
-
-  // ── Form Submit ──────────────────────────
-  function submitForm() {
-    var fname = document.getElementById('fname').value.trim();
-    var lname = document.getElementById('lname').value.trim();
-    var email = document.getElementById('email').value.trim();
-    var phone = document.getElementById('phone').value.trim();
-
-    if (!selectedDate || !selectedTime || !fname || !lname || !email || !phone) {
-      document.getElementById('err3').classList.add('show');
-      return;
-    }
-    document.getElementById('err3').classList.remove('show');
-
-    // Show confirmation
-    var dateStr = monthNames[selectedDate.m] + ' ' + selectedDate.d + ', ' + selectedDate.y;
-    document.getElementById('confirmDate').textContent = dateStr;
-    document.getElementById('confirmTime').textContent = selectedTime;
-    document.getElementById('confirmName').textContent = fname + ' ' + lname;
-
-    setStep(4);
-    // Update progress to show all done
-    for (var i = 1; i <= 3; i++) {
-      var prog = document.getElementById('prog' + i);
-      var pnum = document.getElementById('pnum' + i);
-      prog.classList.remove('active');
-      prog.classList.add('done');
-      pnum.textContent = '✓';
-    }
-    document.getElementById('pline1').classList.add('done-line');
-    document.getElementById('pline2').classList.add('done-line');
-  }
-
-  // ── FAQ Accordion ────────────────────────
-  function toggleFaq(btn) {
-    var item = btn.parentElement;
-    var isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
-    if (!isOpen) item.classList.add('open');
-  }
-
-  // ── Init ─────────────────────────────────
-  renderCalendar();
-</script>
-</body>
-</html>
