@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PoolStore.co.uk — Pool Supplies Since 1999</title>
+  <meta name="description" content="The UK's longest-established online pool store. Expert advice, next-day delivery on chemicals, equipment, covers and more. Call 02380 734922.">
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #0b2d48;
+      --ocean:  #1a6b9a;
+      --teal:   #00b4d8;
+      --sky:    #e0f4fb;
+      --gold:   #f4a800;
+      --green:  #2e7d32;
+      --white:  #ffffff;
+      --offwhite: #f7fafc;
+      --grey:   #6b7280;
+      --dark:   #111827;
+      --border: #e5e7eb;
+      --radius: 10px;
+      --shadow: 0 2px 12px rgba(0,0,0,.10);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.14);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--offwhite); color: var(--dark); line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; border: none; font-family: inherit; }
+
+    /* ── Utility ──────────────────────────────────────────── */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    .btn-primary {
+      display: inline-block; background: var(--teal); color: var(--white);
+      padding: 13px 28px; border-radius: var(--radius); font-weight: 700;
+      font-size: .95rem; letter-spacing: .3px; transition: background .2s, transform .15s;
+    }
+    .btn-primary:hover { background: var(--ocean); transform: translateY(-1px); }
+    .btn-outline {
+      display: inline-block; border: 2px solid var(--teal); color: var(--teal);
+      padding: 11px 26px; border-radius: var(--radius); font-weight: 700;
+      font-size: .95rem; transition: all .2s;
+    }
+    .btn-outline:hover { background: var(--teal); color: var(--white); }
+    .section-heading {
+      font-size: 1.8rem; font-weight: 800; color: var(--navy);
+      margin-bottom: 8px; line-height: 1.25;
+    }
+    .section-sub { color: var(--grey); font-size: 1rem; margin-bottom: 32px; }
+    .badge {
+      display: inline-block; font-size: .7rem; font-weight: 800; letter-spacing: .8px;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
+    }
+    .badge-sale   { background: #fee2e2; color: #b91c1c; }
+    .badge-best   { background: #fef3c7; color: #92400e; }
+    .badge-new    { background: #dcfce7; color: #166534; }
+
+    /* ── Announcement Bar ─────────────────────────────────── */
+    .announcement-bar {
+      background: var(--navy); color: var(--white); text-align: center;
+      padding: 9px 24px; font-size: .85rem; font-weight: 600; letter-spacing: .1px;
+    }
+    .announcement-bar a { color: var(--teal); }
+    .announcement-bar .sep { margin: 0 18px; opacity: .4; }
+
+    /* ── Header ───────────────────────────────────────────── */
+    header {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    }
+    .header-inner {
+      display: flex; align-items: center; gap: 24px;
+      padding: 14px 24px; max-width: 1280px; margin: 0 auto;
+    }
+    .logo {
+      flex-shrink: 0; display: flex; flex-direction: column;
+      line-height: 1; user-select: none;
+    }
+    .logo-mark {
+      font-size: 1.55rem; font-weight: 900; color: var(--navy); letter-spacing: -.5px;
+    }
+    .logo-mark span { color: var(--teal); }
+    .logo-sub { font-size: .65rem; font-weight: 600; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+    .search-bar {
+      flex: 1; display: flex; align-items: center;
+      border: 2px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; transition: border-color .2s;
+    }
+    .search-bar:focus-within { border-color: var(--teal); }
+    .search-bar input {
+      flex: 1; padding: 11px 16px; border: none; outline: none;
+      font-size: .95rem; background: transparent;
+    }
+    .search-bar button {
+      background: var(--teal); color: var(--white);
+      padding: 11px 18px; font-size: 1rem; transition: background .2s;
+    }
+    .search-bar button:hover { background: var(--ocean); }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .header-btn {
+      display: flex; flex-direction: column; align-items: center;
+      background: none; color: var(--navy); font-size: .7rem; font-weight: 700;
+      gap: 3px; padding: 8px 12px; border-radius: 8px; transition: background .15s;
+    }
+    .header-btn:hover { background: var(--sky); }
+    .header-btn svg { width: 22px; height: 22px; stroke: var(--ocean); fill: none; stroke-width: 2; stroke-linecap: round; }
+    .cart-btn { position: relative; }
+    .cart-count {
+      position: absolute; top: 2px; right: 6px;
+      background: var(--teal); color: var(--white);
+      font-size: .65rem; font-weight: 900; width: 17px; height: 17px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+    .phone-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--sky); border: 1.5px solid var(--teal);
+      border-radius: 50px; padding: 8px 16px; color: var(--navy);
+      font-weight: 800; font-size: .9rem; white-space: nowrap;
+    }
+    .phone-pill svg { width: 17px; height: 17px; stroke: var(--teal); fill: none; stroke-width: 2.5; stroke-linecap: round; }
+
+    /* ── Mega Nav ─────────────────────────────────────────── */
+    nav { background: var(--navy); }
+    .nav-inner {
+      display: flex; max-width: 1280px; margin: 0 auto; padding: 0 24px;
+      list-style: none;
+    }
+    .nav-item { position: relative; }
+    .nav-link {
+      display: block; padding: 14px 18px; color: rgba(255,255,255,.88);
+      font-size: .88rem; font-weight: 700; letter-spacing: .2px;
+      transition: color .15s, background .15s; white-space: nowrap;
+    }
+    .nav-link:hover, .nav-item:hover .nav-link { color: var(--teal); background: rgba(255,255,255,.06); }
+    .nav-link .chevron {
+      display: inline-block; margin-left: 5px; font-size: .7rem;
+      vertical-align: middle; transition: transform .2s;
+    }
+    .nav-item:hover .chevron { transform: rotate(180deg); }
+    .mega-menu {
+      display: none; position: absolute; top: 100%; left: 0;
+      min-width: 680px; background: var(--white);
+      box-shadow: var(--shadow-lg); border-top: 3px solid var(--teal);
+      border-radius: 0 0 var(--radius) var(--radius); padding: 28px 32px;
+      z-index: 200;
+    }
+    .nav-item:hover .mega-menu { display: flex; gap: 40px; }
+    .mega-col h4 {
+      font-size: .7rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--teal); margin-bottom: 12px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mega-col ul { list-style: none; }
+    .mega-col ul li { margin-bottom: 6px; }
+    .mega-col ul li a {
+      font-size: .88rem; color: var(--dark); display: flex; align-items: center; gap: 6px;
+      padding: 4px 0; transition: color .15s;
+    }
+    .mega-col ul li a:hover { color: var(--teal); }
+    .mega-col ul li a::before { content: '›'; color: var(--teal); font-weight: 900; }
+    .nav-cta {
+      background: var(--sky); border-radius: var(--radius); padding: 16px;
+      min-width: 180px;
+    }
+    .nav-cta h4 { color: var(--navy) !important; border-color: var(--border); }
+    .nav-cta .promo-box {
+      background: var(--teal); border-radius: 8px; padding: 12px;
+      color: var(--white); font-size: .82rem; font-weight: 600; text-align: center;
+      margin-top: 10px;
+    }
+    .nav-cta .promo-box strong { display: block; font-size: 1.1rem; margin-bottom: 3px; }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    .hero {
+      min-height: 560px; display: flex; align-items: center;
+      background: linear-gradient(120deg, var(--navy) 0%, #0d4a7a 45%, #0a7eb0 100%);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 65% 70% at 80% 55%, rgba(0,180,216,.22) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 20% 80%, rgba(255,255,255,.06) 0%, transparent 60%);
+    }
+    /* Decorative pool wave */
+    .hero-wave {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,180,216,.15) 100%);
+    }
+    .hero-wave svg { width: 100%; height: 100%; }
+    .hero-content {
+      position: relative; z-index: 2; padding: 80px 0;
+      max-width: 620px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,180,216,.2); border: 1px solid rgba(0,180,216,.4);
+      color: var(--teal); font-size: .78rem; font-weight: 800; letter-spacing: 1px;
+      text-transform: uppercase; padding: 6px 14px; border-radius: 50px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; color: var(--white);
+      line-height: 1.15; margin-bottom: 20px;
+    }
+    .hero h1 em { color: var(--teal); font-style: normal; }
+    .hero p {
+      font-size: 1.1rem; color: rgba(255,255,255,.82); margin-bottom: 36px;
+      max-width: 480px; line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-hero {
+      padding: 14px 32px; border-radius: var(--radius); font-weight: 800;
+      font-size: 1rem; transition: all .2s;
+    }
+    .btn-hero.solid { background: var(--teal); color: var(--white); }
+    .btn-hero.solid:hover { background: #00c9f0; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,180,216,.4); }
+    .btn-hero.ghost {
+      background: rgba(255,255,255,.12); color: var(--white);
+      border: 2px solid rgba(255,255,255,.35);
+    }
+    .btn-hero.ghost:hover { background: rgba(255,255,255,.2); }
+    .hero-pool-visual {
+      position: absolute; right: -20px; top: 0; bottom: 0; width: 50%;
+      overflow: hidden;
+    }
+    .pool-art {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #0d4a7a 0%, #007ab5 40%, #00b4d8 70%, #48cae4 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* Animated ripple rings */
+    .ripple-container { position: relative; width: 360px; height: 360px; }
+    .ripple {
+      position: absolute; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.25);
+      animation: ripple 3s ease-in-out infinite;
+    }
+    .ripple:nth-child(1) { width: 120px; height: 120px; top: 50%; left: 50%; margin: -60px; animation-delay: 0s; }
+    .ripple:nth-child(2) { width: 200px; height: 200px; top: 50%; left: 50%; margin: -100px; animation-delay: .5s; }
+    .ripple:nth-child(3) { width: 280px; height: 280px; top: 50%; left: 50%; margin: -140px; animation-delay: 1s; }
+    .ripple:nth-child(4) { width: 360px; height: 360px; top: 50%; left: 50%; margin: -180px; animation-delay: 1.5s; }
+    @keyframes ripple {
+      0%   { opacity: .8; transform: scale(.85); }
+      50%  { opacity: .35; }
+      100% { opacity: .8; transform: scale(1.05); }
+    }
+    .pool-icon {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-size: 64px; filter: drop-shadow(0 4px 12px rgba(0,0,0,.3));
+    }
+    .pool-stats {
+      position: absolute; bottom: 40px; right: 40px;
+      display: flex; gap: 12px;
+    }
+    .pool-stat-card {
+      background: rgba(255,255,255,.12); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.2); border-radius: 12px;
+      padding: 14px 18px; color: var(--white); text-align: center;
+    }
+    .pool-stat-card strong { display: block; font-size: 1.4rem; font-weight: 900; }
+    .pool-stat-card span { font-size: .72rem; opacity: .8; }
+
+    /* ── Trust Bar ────────────────────────────────────────── */
+    .trust-bar {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    .trust-items {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; max-width: 1280px; margin: 0 auto; padding: 0 24px;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 0 24px; border-right: 1px solid var(--border);
+    }
+    .trust-item:last-child { border-right: none; }
+    .trust-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: var(--sky); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+    }
+    .trust-text strong { display: block; font-size: .95rem; color: var(--navy); font-weight: 800; }
+    .trust-text span { font-size: .8rem; color: var(--grey); }
+
+    /* ── Categories ───────────────────────────────────────── */
+    .categories { padding: 64px 0; }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .cat-card {
+      border-radius: 14px; overflow: hidden; position: relative;
+      aspect-ratio: 4/3; cursor: pointer; display: flex; align-items: flex-end;
+      box-shadow: var(--shadow); transition: transform .25s, box-shadow .25s;
+      text-decoration: none;
+    }
+    .cat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .cat-card:hover .cat-label { background: var(--teal); }
+    .cat-bg {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cat-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgba(10,35,60,.75) 100%);
+    }
+    .cat-icon-large { font-size: 80px; filter: drop-shadow(0 4px 8px rgba(0,0,0,.2)); z-index: 1; }
+    .cat-label {
+      position: relative; z-index: 2; width: 100%;
+      background: var(--navy); color: var(--white);
+      padding: 14px 16px; font-weight: 800; font-size: .95rem;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background .2s;
+    }
+    .cat-label span { font-size: .75rem; opacity: .7; font-weight: 600; }
+    /* Category gradients */
+    .cat-chem   { background: linear-gradient(135deg, #0d6efd22, #00b4d844), linear-gradient(135deg, #e0f4fb, #cce8f7); }
+    .cat-covers { background: linear-gradient(135deg, #19537044, #0d4a7a33), linear-gradient(135deg, #d1e8f7, #b3d6ee); }
+    .cat-heat   { background: linear-gradient(135deg, #ff6b3544, #ffa52644), linear-gradient(135deg, #fff3e0, #ffe0b2); }
+    .cat-equip  { background: linear-gradient(135deg, #0f3f6a44, #1a6b9a33), linear-gradient(135deg, #e3f0f8, #c9e2f2); }
+    .cat-pools  { background: linear-gradient(135deg, #00b4d844, #48cae444), linear-gradient(135deg, #e0f8ff, #b3eefb); }
+    .cat-clean  { background: linear-gradient(135deg, #2e7d3244, #43a04744), linear-gradient(135deg, #e8f5e9, #c8e6c9); }
+    .cat-pipes  { background: linear-gradient(135deg, #5d4e7544, #7e57c244), linear-gradient(135deg, #ede7f6, #d1c4e9); }
+    .cat-help   { background: linear-gradient(135deg, #f4a80044, #ff8f0044), linear-gradient(135deg, #fffde7, #fff9c4); }
+    /* Wide card for featured */
+    .cat-card.wide { grid-column: span 2; aspect-ratio: 16/7; }
+
+    /* ── Best Sellers ─────────────────────────────────────── */
+    .best-sellers { padding: 64px 0; background: var(--white); }
+    .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 36px; }
+    .products-carousel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .product-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s;
+      display: flex; flex-direction: column;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .product-img {
+      aspect-ratio: 1; background: var(--sky);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 72px; position: relative; overflow: hidden;
+    }
+    .product-img-bg {
+      position: absolute; inset: 0;
+      opacity: .25;
+    }
+    .product-badge { position: absolute; top: 12px; left: 12px; }
+    .product-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+    .product-brand { font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--grey); margin-bottom: 4px; font-weight: 700; }
+    .product-name { font-size: .95rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; line-height: 1.4; }
+    .product-stars { color: var(--gold); font-size: .85rem; margin-bottom: 12px; }
+    .product-stars span { color: var(--grey); font-size: .78rem; margin-left: 4px; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+    .product-price { font-size: 1.2rem; font-weight: 900; color: var(--navy); }
+    .product-price .was { font-size: .78rem; color: var(--grey); text-decoration: line-through; font-weight: 400; display: block; }
+    .add-to-cart {
+      background: var(--teal); color: var(--white);
+      border-radius: 8px; padding: 9px 14px; font-weight: 800; font-size: .82rem;
+      transition: background .15s; white-space: nowrap;
+    }
+    .add-to-cart:hover { background: var(--ocean); }
+
+    /* ── Seasonal Feature ─────────────────────────────────── */
+    .seasonal { padding: 64px 0; }
+    .seasonal-inner {
+      background: linear-gradient(120deg, var(--navy) 0%, #0d4a7a 60%, #0a7eb0 100%);
+      border-radius: 20px; overflow: hidden; display: grid;
+      grid-template-columns: 1fr 1fr; min-height: 380px;
+    }
+    .seasonal-content {
+      padding: 56px 48px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .seasonal-tag {
+      display: inline-block; background: rgba(0,180,216,.25);
+      color: var(--teal); font-size: .72rem; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 50px; margin-bottom: 18px;
+    }
+    .seasonal-content h2 {
+      font-size: 2rem; font-weight: 900; color: var(--white);
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .seasonal-content h2 em { color: var(--teal); font-style: normal; }
+    .seasonal-content p { color: rgba(255,255,255,.78); margin-bottom: 28px; line-height: 1.7; }
+    .seasonal-products {
+      padding: 40px; display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; align-content: center;
+    }
+    .seasonal-product-card {
+      background: rgba(255,255,255,.1); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.18); border-radius: 12px;
+      padding: 16px; color: var(--white); cursor: pointer; transition: all .2s;
+    }
+    .seasonal-product-card:hover { background: rgba(255,255,255,.18); transform: scale(1.02); }
+    .sp-icon { font-size: 2rem; margin-bottom: 8px; }
+    .sp-name { font-size: .82rem; font-weight: 700; margin-bottom: 4px; }
+    .sp-price { font-size: 1rem; font-weight: 900; color: var(--teal); }
+
+    /* ── Why PoolStore ────────────────────────────────────── */
+    .why { padding: 64px 0; background: var(--white); }
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .why-card {
+      text-align: center; padding: 36px 28px;
+      border: 1px solid var(--border); border-radius: 16px;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    .why-card:hover { box-shadow: var(--shadow-lg); border-color: var(--teal); }
+    .why-icon {
+      width: 72px; height: 72px; border-radius: 20px;
+      background: var(--sky); display: flex; align-items: center;
+      justify-content: center; font-size: 2rem; margin: 0 auto 20px;
+    }
+    .why-card h3 { font-size: 1.1rem; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+    .why-card p { color: var(--grey); font-size: .9rem; line-height: 1.7; }
+
+    /* ── Trustpilot ───────────────────────────────────────── */
+    .reviews { padding: 64px 0; }
+    .tp-header { display: flex; align-items: center; gap: 20px; margin-bottom: 36px; flex-wrap: wrap; }
+    .tp-score {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 22px; box-shadow: var(--shadow);
+    }
+    .tp-logo { font-size: 1.1rem; font-weight: 900; color: #00b67a; }
+    .tp-stars { color: #00b67a; font-size: 1.1rem; }
+    .tp-text strong { font-size: 1.5rem; font-weight: 900; color: var(--navy); }
+    .tp-text span { font-size: .8rem; color: var(--grey); }
+    .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .review-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px; box-shadow: var(--shadow);
+    }
+    .review-stars { color: #00b67a; margin-bottom: 10px; }
+    .review-text { font-size: .9rem; color: var(--dark); line-height: 1.7; margin-bottom: 14px; }
+    .review-author { display: flex; align-items: center; gap: 10px; }
+    .review-avatar {
+      width: 36px; height: 36px; border-radius: 50%; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: .85rem; flex-shrink: 0;
+    }
+    .review-name { font-size: .85rem; font-weight: 700; color: var(--navy); }
+    .review-date { font-size: .75rem; color: var(--grey); }
+
+    /* ── Blog Teasers ─────────────────────────────────────── */
+    .blog { padding: 64px 0; background: var(--white); }
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .blog-card {
+      border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+      box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s;
+    }
+    .blog-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .blog-img {
+      height: 160px; display: flex; align-items: center; justify-content: center;
+      font-size: 64px;
+    }
+    .blog-body { padding: 20px; background: var(--white); }
+    .blog-tag {
+      font-size: .7rem; font-weight: 800; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 8px;
+    }
+    .blog-title { font-size: 1rem; font-weight: 800; color: var(--navy); margin-bottom: 8px; line-height: 1.4; }
+    .blog-excerpt { font-size: .85rem; color: var(--grey); line-height: 1.6; margin-bottom: 14px; }
+    .blog-meta { font-size: .75rem; color: var(--grey); display: flex; gap: 12px; }
+
+    /* ── Newsletter ───────────────────────────────────────── */
+    .newsletter { padding: 64px 0; }
+    .newsletter-inner {
+      background: var(--sky); border: 2px solid var(--teal);
+      border-radius: 20px; padding: 56px 48px; text-align: center;
+    }
+    .newsletter-inner h2 { font-size: 1.8rem; font-weight: 900; color: var(--navy); margin-bottom: 10px; }
+    .newsletter-inner p { color: var(--grey); margin-bottom: 30px; }
+    .newsletter-form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .newsletter-form input {
+      padding: 13px 20px; border-radius: var(--radius); border: 2px solid var(--border);
+      font-size: .95rem; width: 320px; outline: none; transition: border-color .2s;
+    }
+    .newsletter-form input:focus { border-color: var(--teal); }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    footer { background: var(--navy); color: rgba(255,255,255,.85); padding: 56px 0 28px; }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .footer-brand .logo-mark { color: var(--white); font-size: 1.6rem; margin-bottom: 12px; }
+    .footer-brand p { font-size: .85rem; opacity: .75; line-height: 1.7; margin-bottom: 16px; }
+    .footer-contact {
+      background: rgba(255,255,255,.07); border-radius: 10px; padding: 14px 16px;
+    }
+    .footer-contact a { color: var(--teal); font-weight: 800; font-size: 1.05rem; }
+    .footer-contact p { font-size: .78rem; opacity: .65; margin-top: 4px; }
+    .footer-col h5 {
+      font-size: .72rem; text-transform: uppercase; letter-spacing: 1.5px;
+      font-weight: 800; color: var(--teal); margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; }
+    .footer-col ul li a { font-size: .85rem; opacity: .78; transition: opacity .15s; }
+    .footer-col ul li a:hover { opacity: 1; color: var(--teal); }
+    .footer-bottom {
+      padding-top: 24px; display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: gap; font-size: .78rem; opacity: .6; flex-wrap: wrap; gap: 12px;
+    }
+    .payment-icons { display: flex; gap: 8px; }
+    .pay-icon {
+      background: rgba(255,255,255,.12); border-radius: 5px;
+      padding: 4px 10px; font-size: .7rem; font-weight: 700; color: var(--white);
+    }
+
+    /* ── Mobile ───────────────────────────────────────────── */
+    .mob-menu-btn {
+      display: none; background: none; color: var(--white);
+      padding: 8px; font-size: 1.4rem; border-radius: 6px;
+      transition: background .15s;
+    }
+    .mob-menu-btn:hover { background: rgba(255,255,255,.12); }
+    @media (max-width: 1100px) {
+      .hero-pool-visual { display: none; }
+      .hero-content { max-width: 100%; }
+    }
+    @media (max-width: 900px) {
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .cat-card.wide { grid-column: span 2; }
+      .products-carousel { grid-template-columns: repeat(2, 1fr); }
+      .trust-items { grid-template-columns: repeat(2, 1fr); row-gap: 16px; }
+      .trust-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .trust-item:nth-child(2n) { border-bottom: 0; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .seasonal-inner { grid-template-columns: 1fr; }
+      .seasonal-products { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .cat-grid { grid-template-columns: 1fr 1fr; }
+      .products-carousel { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .search-bar { display: none; }
+      .trust-items { grid-template-columns: 1fr; }
+      .trust-item { border: none; border-bottom: 1px solid var(--border); }
+      nav .nav-inner { overflow-x: auto; }
+      .phone-pill span { display: none; }
+    }
+
+    /* ── Misc interactive ─────────────────────────────────── */
+    .qty-selector {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    }
+    .qty-btn {
+      width: 30px; height: 30px; border-radius: 6px;
+      background: var(--sky); color: var(--navy); font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center; font-weight: 800;
+      transition: background .15s;
+    }
+    .qty-btn:hover { background: var(--teal); color: var(--white); }
+    .qty-val { font-weight: 700; font-size: .95rem; min-width: 24px; text-align: center; }
+
+    /* Notification toast */
+    .toast {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+      background: var(--navy); color: var(--white);
+      padding: 14px 22px; border-radius: 12px; font-size: .9rem; font-weight: 600;
+      box-shadow: var(--shadow-lg); transform: translateY(80px); opacity: 0;
+      transition: all .35s cubic-bezier(.34,1.56,.64,1);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* Volume discount strip on product card */
+    .volume-tip {
+      font-size: .72rem; background: #f0fdf4; color: #166534;
+      border: 1px solid #bbf7d0; border-radius: 6px;
+      padding: 4px 8px; margin-bottom: 8px; display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement-bar">
+  <span>🚚 Free delivery on orders over £50</span>
+  <span class="sep">|</span>
+  <span>📞 Expert advice: <a href="tel:02380734922">02380 734922</a></span>
+  <span class="sep">|</span>
+  <span>🔥 <a href="#">Clearance Sale — up to 40% off</a></span>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">Pool<span>Store</span></div>
+      <div class="logo-sub">Since 1999 · co.uk</div>
+    </a>
+
+    <div class="search-bar">
+      <input type="search" placeholder="Search for chemicals, pumps, covers…" id="searchInput">
+      <button onclick="handleSearch()" title="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+
+    <div class="header-actions">
+      <div class="phone-pill">
+        <svg viewBox="0 0 24 24" width="17" height="17"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+        <span>02380 734922</span>
+      </div>
+      <button class="header-btn" onclick="showToast('Sign in coming soon!')">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Account
+      </button>
+      <button class="header-btn cart-btn" onclick="showToast('0 items in your basket')">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <div class="cart-count" id="cartCount">0</div>
+        Basket
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MEGA NAV -->
+<nav>
+  <ul class="nav-inner">
+
+    <li class="nav-item">
+      <a href="#" class="nav-link">Pools <span class="chevron">▾</span></a>
+      <div class="mega-menu">
+        <div class="mega-col">
+          <h4>Swimming Pools</h4>
+          <ul>
+            <li><a href="#">Above Ground Pools</a></li>
+            <li><a href="#">DIY Pool Kits</a></li>
+            <li><a href="#">Inflatable Pools</a></li>
+            <li><a href="#">Pool Surrounds</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h4>Small Pools & Spas</h4>
+          <ul>
+            <li><a href="#">Paddling Pools</a></li>
+            <li><a href="#">Hot Tub Accessories</a></li>
+            <li><a href="#">Plunge Pools</a></li>
+            <li><a href="#">Pool Steps & Ladders</a></li>
+          </ul>
+        </div>
+        <div class="nav-cta">
+          <h4>Seasonal Pick</h4>
+          <div class="promo-box">
+            <strong>Spring Sale</strong>
+            Above ground pools from £299
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a href="#" class="nav-link">Chemicals &amp; Testing <span class="chevron">▾</span></a>
+      <div class="mega-menu">
+        <div class="mega-col">
+          <h4>Sanitisers</h4>
+          <ul>
+            <li><a href="#">Chlorine Tablets</a></li>
+            <li><a href="#">Chlorine Granules</a></li>
+            <li><a href="#">Shock Treatment</a></li>
+            <li><a href="#">Non-Chlorine Shock</a></li>
+            <li><a href="#">Bromine</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h4>Balancing</h4>
+          <ul>
+            <li><a href="#">pH Plus / pH Minus</a></li>
+            <li><a href="#">Alkalinity Increaser</a></li>
+            <li><a href="#">Algaecides</a></li>
+            <li><a href="#">Clarifiers &amp; Flocculants</a></li>
+            <li><a href="#">Stabiliser (Cyanuric Acid)</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h4>Testing</h4>
+          <ul>
+            <li><a href="#">Test Kits</a></li>
+            <li><a href="#">Test Strips</a></li>
+            <li><a href="#">Chemical Feeders</a></li>
+            <li><a href="#">For Small Pools</a></li>
+          </ul>
+        </div>
+        <div class="nav-cta">
+          <h4>Expert Tip</h4>
+          <div class="promo-box">
+            <strong>Starter Bundle</strong>
+            Chlorine + pH kit + test strips — everything to open your pool
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a href="#" class="nav-link">Covers &amp; Liners <span class="chevron">▾</span></a>
+      <div class="mega-menu">
+        <div class="mega-col">
+          <h4>Covers</h4>
+          <ul>
+            <li><a href="#">Summer Covers</a></li>
+            <li><a href="#">Winter Covers</a></li>
+            <li><a href="#">Safety Covers</a></li>
+            <li><a href="#">Slatted Covers</a></li>
+            <li><a href="#">Heat Retention Covers</a></li>
+            <li><a href="#">Cover Rollers</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h4>Liners</h4>
+          <ul>
+            <li><a href="#">Standard Liners</a></li>
+            <li><a href="#">Ovalam Liners</a></li>
+            <li><a href="#">Custom Liners</a></li>
+            <li><a href="#">Liner Accessories</a></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a href="#" class="nav-link">Heating <span class="chevron">▾</span></a>
+      <div class="mega-menu">
+        <div class="mega-col">
+          <h4>Heaters</h4>
+          <ul>
+            <li><a href="#">Heat Pumps</a></li>
+            <li><a href="#">Gas Heaters</a></li>
+            <li><a href="#">Electric Heaters</a></li>
+            <li><a href="#">Oil Heaters</a></li>
+            <li><a href="#">Heat Exchangers</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h4>Solar & Controls</h4>
+          <ul>
+            <li><a href="#">Solar Heating Panels</a></li>
+            <li><a href="#">Solar Domes</a></li>
+            <li><a href="#">Heating Controllers</a></li>
+            <li><a href="#">Temperature Sensors</a></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a href="#" class="nav-link">Equipment <span class="chevron">▾</span></a>
+      <div class="mega-menu">
+        <div class="mega-col">
+          <h4>Filtration</h4>
+          <ul>
+            <li><a href="#">Pumps</a></li>
+            <li><a href="#">Sand Filters</a></li>
+            <li><a href="#">Cartridge Filters</a></li>
+            <li><a href="#">Salt Water Chlorinators</a></li>
+            <li><a href="#">UV Systems</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h4>Accessories</h4>
+          <ul>
+            <li><a href="#">Pool Lighting</a></li>
+            <li><a href="#">Counter Current Units</a></li>
+            <li><a href="#">Ladders &amp; Steps</a></li>
+            <li><a href="#">Dehumidifiers</a></li>
+            <li><a href="#">Pool Enclosures</a></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a href="#" class="nav-link">Cleaning <span class="chevron">▾</span></a>
+      <div class="mega-menu">
+        <div class="mega-col">
+          <h4>Automatic</h4>
+          <ul>
+            <li><a href="#">Robotic Cleaners</a></li>
+            <li><a href="#">Suction Cleaners</a></li>
+            <li><a href="#">Pressure Cleaners</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h4>Manual</h4>
+          <ul>
+            <li><a href="#">Nets &amp; Skimmers</a></li>
+            <li><a href="#">Brushes</a></li>
+            <li><a href="#">Telescopic Poles</a></li>
+            <li><a href="#">Vacuum Heads &amp; Hoses</a></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a href="#" class="nav-link">Pipes &amp; Fittings <span class="chevron">▾</span></a>
+      <div class="mega-menu">
+        <div class="mega-col">
+          <h4>Pipework</h4>
+          <ul>
+            <li><a href="#">PVC Pipe</a></li>
+            <li><a href="#">Flexible Pipe</a></li>
+            <li><a href="#">Valves &amp; Fittings</a></li>
+            <li><a href="#">Flow Fittings</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h4>Surrounds</h4>
+          <ul>
+            <li><a href="#">Coping Stones</a></li>
+            <li><a href="#">Liner Accessories</a></li>
+            <li><a href="#">Skimmer Baskets</a></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a href="#" class="nav-link">Help &amp; Advice <span class="chevron">▾</span></a>
+      <div class="mega-menu">
+        <div class="mega-col">
+          <h4>Guides</h4>
+          <ul>
+            <li><a href="#">Pool Care Guides</a></li>
+            <li><a href="#">Opening Your Pool</a></li>
+            <li><a href="#">Winterising Your Pool</a></li>
+            <li><a href="#">Chemical Dosing Guide</a></li>
+          </ul>
+        </div>
+        <div class="mega-col">
+          <h4>Tools</h4>
+          <ul>
+            <li><a href="#">Pool Volume Calculator</a></li>
+            <li><a href="#">Liner Price Calculator</a></li>
+            <li><a href="#">Chemical Dosing Calculator</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">✦ Britain's first online pool store · Est. 1999</div>
+      <h1>Get your pool <em>summer-ready</em> with expert-backed supplies</h1>
+      <p>26 years of pool expertise, delivered to your door. From chlorine to heat pumps — if your pool needs it, we've got it, and we'll tell you exactly how to use it.</p>
+      <div class="hero-actions">
+        <a href="#categories" class="btn-hero solid">Shop All Categories</a>
+        <a href="#" class="btn-hero ghost">📞 Talk to an Expert</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-pool-visual">
+    <div class="pool-art">
+      <div class="ripple-container">
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="pool-icon">🏊</div>
+      </div>
+      <div class="pool-stats">
+        <div class="pool-stat-card">
+          <strong>4.8★</strong>
+          <span>Trustpilot</span>
+        </div>
+        <div class="pool-stat-card">
+          <strong>26yrs</strong>
+          <span>Online</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<section class="trust-bar">
+  <div class="trust-items">
+    <div class="trust-item">
+      <div class="trust-icon">🏅</div>
+      <div class="trust-text">
+        <strong>26 Years Online</strong>
+        <span>UK's longest-established pool store</span>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">⭐</div>
+      <div class="trust-text">
+        <strong>4.8/5 on Trustpilot</strong>
+        <span>190+ verified reviews</span>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🚚</div>
+      <div class="trust-text">
+        <strong>Next Day Delivery</strong>
+        <span>Order before 12pm · Free over £50</span>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">📞</div>
+      <div class="trust-text">
+        <strong>Real Expert Advice</strong>
+        <span>Call 02380 734922 — actual pool people</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-heading">Everything your pool needs</h2>
+        <p class="section-sub" style="margin:0">Browse by category — or use search above for something specific</p>
+      </div>
+    </div>
+    <div class="cat-grid">
+
+      <a href="#" class="cat-card wide">
+        <div class="cat-bg cat-chem">
+          <div class="cat-icon-large">🧪</div>
+        </div>
+        <div class="cat-label">
+          Chemicals &amp; Testing
+          <span>Chlorine · pH · Algicides · Test Kits</span>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-bg cat-covers">
+          <div class="cat-icon-large">🛡️</div>
+        </div>
+        <div class="cat-label">
+          Covers &amp; Liners
+          <span>Summer · Winter · Safety · Custom</span>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-bg cat-heat">
+          <div class="cat-icon-large">🔥</div>
+        </div>
+        <div class="cat-label">
+          Heating
+          <span>Heat Pumps · Gas · Solar · Electric</span>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-bg cat-equip">
+          <div class="cat-icon-large">⚙️</div>
+        </div>
+        <div class="cat-label">
+          Equipment
+          <span>Pumps · Filters · UV · Salt Chlorinators</span>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-bg cat-pools">
+          <div class="cat-icon-large">🏊</div>
+        </div>
+        <div class="cat-label">
+          Pools
+          <span>Above Ground · DIY Kits · Accessories</span>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-bg cat-clean">
+          <div class="cat-icon-large">🤖</div>
+        </div>
+        <div class="cat-label">
+          Cleaning
+          <span>Robotic · Suction · Nets &amp; Brushes</span>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-bg cat-pipes">
+          <div class="cat-icon-large">🔧</div>
+        </div>
+        <div class="cat-label">
+          Pipes &amp; Fittings
+          <span>PVC · Valves · Coping Stones</span>
+        </div>
+      </a>
+
+      <a href="#" class="cat-card">
+        <div class="cat-bg cat-help">
+          <div class="cat-icon-large">💡</div>
+        </div>
+        <div class="cat-label">
+          Help &amp; Advice
+          <span>Guides · Calculators · Contact</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- BEST SELLERS -->
+<section class="best-sellers">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-heading">Best Sellers</h2>
+        <p class="section-sub" style="margin:0">Our most popular products, ordered by our customers every week</p>
+      </div>
+      <a href="#" class="btn-outline">View all products</a>
+    </div>
+    <div class="products-carousel" id="productsGrid"></div>
+  </div>
+</section>
+
+<!-- SEASONAL FEATURE -->
+<section class="seasonal">
+  <div class="container">
+    <div class="seasonal-inner">
+      <div class="seasonal-content">
+        <div class="seasonal-tag">🌿 Spring 2026</div>
+        <h2>Opening your pool <em>the right way</em></h2>
+        <p>After months of winter, your pool needs a careful, methodical opening process. We've put together everything you'll need to go from covered to crystal-clear in a weekend.</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="#" class="btn-hero solid">Shop the Opening Bundle</a>
+          <a href="#" class="btn-hero ghost">Read the Guide</a>
+        </div>
+      </div>
+      <div class="seasonal-products">
+        <div class="seasonal-product-card" onclick="addToCart('Spring Shock Treatment')">
+          <div class="sp-icon">⚡</div>
+          <div class="sp-name">Spring Shock Treatment 5kg</div>
+          <div class="sp-price">£18.99</div>
+        </div>
+        <div class="seasonal-product-card" onclick="addToCart('pH Balancing Kit')">
+          <div class="sp-icon">⚗️</div>
+          <div class="sp-name">pH Balancing Starter Kit</div>
+          <div class="sp-price">£12.50</div>
+        </div>
+        <div class="seasonal-product-card" onclick="addToCart('Algaecide 1L')">
+          <div class="sp-icon">🌿</div>
+          <div class="sp-name">Algaecide 1L Preventative</div>
+          <div class="sp-price">£9.75</div>
+        </div>
+        <div class="seasonal-product-card" onclick="addToCart('Pro Test Kit')">
+          <div class="sp-icon">🔬</div>
+          <div class="sp-name">Pro 5-in-1 Test Kit</div>
+          <div class="sp-price">£14.99</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY POOLSTORE -->
+<section class="why">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:40px;">
+      <h2 class="section-heading">Why customers choose PoolStore</h2>
+      <p class="section-sub">We've been doing this since 1999 — here's what that means for you</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🏅</div>
+        <h3>"26 years of getting it right"</h3>
+        <p>We were the first company in Europe to sell pool products online. We've helped hundreds of thousands of pool owners across the UK keep their water perfect. That experience shows in every product we stock and every guide we write.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📞</div>
+        <h3>"Call us — we actually know our stuff"</h3>
+        <p>Our team aren't call-centre scripts — they're pool people. Ring 02380 734922 and you'll speak to someone who can diagnose your green water, recommend the right pump size, or talk you through a liner replacement. No chatbots.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🚚</div>
+        <h3>"Everything your pool needs, tomorrow"</h3>
+        <p>Order before 12pm and most products ship for next-day UK delivery. With hundreds of chemicals, covers, pumps, and accessories in stock, you won't be left waiting when your pool needs attention.</p>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:36px; padding: 24px; background: var(--sky); border-radius: 14px; border: 1px solid rgba(0,180,216,.3);">
+      <p style="font-style: italic; color: var(--navy); font-size: 1.05rem; font-weight: 600; max-width: 680px; margin: 0 auto;">
+        "I don't sell anything that I wouldn't use in my own pool."
+      </p>
+      <p style="font-size: .82rem; color: var(--grey); margin-top: 8px;">— Managing Director, PoolStore UK Ltd</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRUSTPILOT REVIEWS -->
+<section class="reviews">
+  <div class="container">
+    <div class="tp-header">
+      <h2 class="section-heading" style="margin:0">What our customers say</h2>
+      <div class="tp-score">
+        <div class="tp-logo">★ Trustpilot</div>
+        <div class="tp-stars">★★★★★</div>
+        <div class="tp-text">
+          <strong>4.8</strong>
+          <span>190+ reviews</span>
+        </div>
+      </div>
+    </div>
+    <div class="reviews-grid" id="reviewsGrid"></div>
+  </div>
+</section>
+
+<!-- BLOG TEASERS -->
+<section class="blog">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-heading">Pool Care Guides</h2>
+        <p class="section-sub" style="margin:0">Written by our experts — practical, accurate, plain English</p>
+      </div>
+      <a href="#" class="btn-outline">All guides</a>
+    </div>
+    <div class="blog-grid">
+      <a href="#" class="blog-card">
+        <div class="blog-img" style="background: linear-gradient(135deg, #e0f4fb, #b3d6ee);">🌸</div>
+        <div class="blog-body">
+          <div class="blog-tag">Pool Opening</div>
+          <div class="blog-title">How to Open Your Pool After Winter: A Step-by-Step Guide</div>
+          <div class="blog-excerpt">Reconnect your pump, balance your chemistry, and clear the debris — we walk you through every step so your first swim of the year isn't a murky surprise.</div>
+          <div class="blog-meta"><span>⏱ 8 min read</span><span>March 2026</span></div>
+        </div>
+      </a>
+      <a href="#" class="blog-card">
+        <div class="blog-img" style="background: linear-gradient(135deg, #e0f8ff, #b3eefb);">🧪</div>
+        <div class="blog-body">
+          <div class="blog-tag">Water Chemistry</div>
+          <div class="blog-title">Chlorine, pH and Alkalinity: Understanding the Balancing Act</div>
+          <div class="blog-excerpt">These three numbers control everything about your pool water. Get them wrong and no amount of chlorine will save you. Get them right and maintenance becomes simple.</div>
+          <div class="blog-meta"><span>⏱ 12 min read</span><span>February 2026</span></div>
+        </div>
+      </a>
+      <a href="#" class="blog-card">
+        <div class="blog-img" style="background: linear-gradient(135deg, #fff3e0, #ffe0b2);">❄️</div>
+        <div class="blog-body">
+          <div class="blog-tag">Winterising</div>
+          <div class="blog-title">Winterising Your Pool: What to Do Before the First Frost</div>
+          <div class="blog-excerpt">Don't let a harsh UK winter damage your equipment or liner. Follow our seasonal shutdown checklist to protect your investment until spring.</div>
+          <div class="blog-meta"><span>⏱ 10 min read</span><span>October 2025</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="container">
+    <div class="newsletter-inner">
+      <h2>Pool care tips &amp; exclusive offers</h2>
+      <p>Join 8,000+ pool owners who get seasonal advice, product launches, and members-only discounts in their inbox.</p>
+      <form class="newsletter-form" onsubmit="handleNewsletterSignup(event)">
+        <input type="email" placeholder="your@email.com" required id="emailInput">
+        <button type="submit" class="btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-mark">Pool<span style="color:var(--teal)">Store</span></div>
+        <p style="margin-top:10px">The UK's original online pool store, established in Southampton in 1999. Feefo Platinum Trusted Service · Trustpilot 4.8/5.</p>
+        <div class="footer-contact">
+          <a href="tel:02380734922">02380 734922</a>
+          <p>Mon–Fri 9am–5pm · Expert pool advice</p>
+        </div>
+        <p style="margin-top:12px; font-size:.78rem; opacity:.65;">North Baddesley, Southampton SO52 9BG</p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Shop</h5>
+        <ul>
+          <li><a href="#">Chemicals &amp; Testing</a></li>
+          <li><a href="#">Covers &amp; Liners</a></li>
+          <li><a href="#">Heating</a></li>
+          <li><a href="#">Equipment</a></li>
+          <li><a href="#">Cleaning</a></li>
+          <li><a href="#">Pipes &amp; Fittings</a></li>
+          <li><a href="#">Clearance Sale</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Help</h5>
+        <ul>
+          <li><a href="#">Pool Care Guides</a></li>
+          <li><a href="#">Volume Calculator</a></li>
+          <li><a href="#">Liner Calculator</a></li>
+          <li><a href="#">Dosing Guide</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Delivery Info</a></li>
+          <li><a href="#">Returns Policy</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>About</h5>
+        <ul>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Trustpilot Reviews</a></li>
+          <li><a href="#">Feefo Award</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms &amp; Conditions</a></li>
+          <li><a href="#">Sitemap</a></li>
+        </ul>
+        <h5 style="margin-top:24px">Delivery</h5>
+        <p style="font-size:.8rem; opacity:.75; line-height:1.6;">
+          Free on orders over £50<br>
+          Next day available (order by 12pm)<br>
+          UK mainland only
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 PoolStore UK Ltd · Company No. 0000000 · VAT No. 000 0000 00</span>
+      <div class="payment-icons">
+        <div class="pay-icon">VISA</div>
+        <div class="pay-icon">MC</div>
+        <div class="pay-icon">AMEX</div>
+        <div class="pay-icon">PayPal</div>
+        <div class="pay-icon">Apple Pay</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="toastMsg">Added to basket!</span>
+</div>
+
+<script>
+  /* ── Product Data ────────────────────────────────────────── */
+  const products = [
+    {
+      id: 1, icon: '🧴', brand: 'Bioguard',
+      name: 'Stabilised Chlorine Granules 5kg', price: 24.99, was: 29.99,
+      rating: 4.9, reviews: 248, badge: 'best', bgColor: '#dbeafe',
+      volume: 'Buy 2 for £44 — save £5.98'
+    },
+    {
+      id: 2, icon: '💊', brand: 'PoolStore',
+      name: 'Slow-Release Chlorine Tablets 5kg (200g)', price: 22.50, was: null,
+      rating: 4.8, reviews: 191, badge: 'best', bgColor: '#e0f2fe',
+      volume: 'Buy 3 for £60 — save £7.50'
+    },
+    {
+      id: 3, icon: '⚗️', brand: 'Lo-Chlor',
+      name: 'pH Minus (Dry Acid) 5kg', price: 11.99, was: null,
+      rating: 4.7, reviews: 87, badge: null, bgColor: '#fce7f3',
+      volume: null
+    },
+    {
+      id: 4, icon: '🤖', brand: 'Dolphin',
+      name: 'M400 Robotic Pool Cleaner', price: 699.00, was: 849.00,
+      rating: 4.9, reviews: 52, badge: 'sale', bgColor: '#d1fae5',
+      volume: null
+    },
+    {
+      id: 5, icon: '⚡', brand: 'BWT',
+      name: 'Rapid Shock (Non-Chlorine) 1kg', price: 8.99, was: null,
+      rating: 4.6, reviews: 114, badge: null, bgColor: '#fef9c3',
+      volume: 'Buy 5 for £39 — save £5.95'
+    },
+    {
+      id: 6, icon: '🔬', brand: 'PoolStore',
+      name: 'Pro 5-in-1 Pool Test Kit', price: 14.99, was: null,
+      rating: 4.8, reviews: 203, badge: 'best', bgColor: '#e0e7ff',
+      volume: null
+    },
+    {
+      id: 7, icon: '⚙️', brand: 'Hayward',
+      name: 'Super Pump 0.75HP Variable Speed', price: 329.00, was: 399.00,
+      rating: 4.7, reviews: 39, badge: 'sale', bgColor: '#f3e8ff',
+      volume: null
+    },
+    {
+      id: 8, icon: '🌿', brand: 'Hth',
+      name: 'Algaecide 40% Concentrate 1L', price: 9.75, was: null,
+      rating: 4.5, reviews: 76, badge: 'new', bgColor: '#dcfce7',
+      volume: null
+    }
+  ];
+
+  const badgeMap = { sale: 'badge-sale', best: 'badge-best', new: 'badge-new' };
+  const badgeLabel = { sale: 'Sale', best: 'Best Seller', new: 'New' };
+
+  function stars(rating) {
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5 ? '½' : '';
+    return '★'.repeat(full) + half;
+  }
+
+  function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    grid.innerHTML = products.map(p => `
+      <div class="product-card">
+        <div class="product-img" style="background: ${p.bgColor};">
+          <div class="product-img-bg" style="background: radial-gradient(circle, white 0%, ${p.bgColor} 100%);"></div>
+          ${p.badge ? `<div class="product-badge"><span class="badge ${badgeMap[p.badge]}">${badgeLabel[p.badge]}</span></div>` : ''}
+          <span style="position:relative;z-index:1;font-size:64px">${p.icon}</span>
+        </div>
+        <div class="product-body">
+          <div class="product-brand">${p.brand}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-stars">${stars(p.rating)}<span>(${p.reviews})</span></div>
+          ${p.volume ? `<div class="volume-tip">🏷 ${p.volume}</div>` : ''}
+          <div class="product-footer">
+            <div class="product-price">
+              ${p.was ? `<span class="was">Was £${p.was.toFixed(2)}</span>` : ''}
+              £${p.price.toFixed(2)}
+            </div>
+            <button class="add-to-cart" onclick="addToCart('${p.name}')">+ Add</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* ── Reviews ─────────────────────────────────────────────── */
+  const reviews = [
+    {
+      stars: 5, text: "Ordered stabilised chlorine granules on a Tuesday afternoon and they arrived Wednesday morning. Brilliant service. The product itself is excellent — pool has been crystal clear for 3 weeks solid.",
+      name: "James W.", date: "February 2026", colour: "#0b2d48"
+    },
+    {
+      stars: 5, text: "Called with a water chemistry question before ordering. The guy who answered actually knew what he was talking about — not just reading off a script. Recommended the right algaecide and my green pool was clear in 48 hours.",
+      name: "Sarah M.", date: "January 2026", colour: "#1a6b9a"
+    },
+    {
+      stars: 5, text: "Have been using PoolStore for 8 years now. Never had a problem with an order. Prices are fair, range is enormous, and when I had an issue with a pump they sorted it quickly. Old-fashioned customer service.",
+      name: "David K.", date: "December 2025", colour: "#00b4d8"
+    }
+  ];
+
+  function renderReviews() {
+    document.getElementById('reviewsGrid').innerHTML = reviews.map(r => `
+      <div class="review-card">
+        <div class="review-stars">${'★'.repeat(r.stars)}</div>
+        <div class="review-text">"${r.text}"</div>
+        <div class="review-author">
+          <div class="review-avatar" style="background:${r.colour}">${r.name[0]}</div>
+          <div>
+            <div class="review-name">${r.name}</div>
+            <div class="review-date">Verified purchase · ${r.date}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* ── Cart ────────────────────────────────────────────────── */
+  let cartCount = 0;
+  function addToCart(name) {
+    cartCount++;
+    document.getElementById('cartCount').textContent = cartCount;
+    showToast(`✓ Added "${name}" to basket`);
+  }
+
+  /* ── Toast ───────────────────────────────────────────────── */
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  /* ── Search ──────────────────────────────────────────────── */
+  function handleSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) showToast(`Searching for "${q}"…`);
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleSearch();
+  });
+
+  /* ── Newsletter ──────────────────────────────────────────── */
+  function handleNewsletterSignup(e) {
+    e.preventDefault();
+    const email = document.getElementById('emailInput').value;
+    showToast(`Thanks! "${email}" subscribed successfully.`);
+    document.getElementById('emailInput').value = '';
+  }
+
+  /* ── Init ────────────────────────────────────────────────── */
+  renderProducts();
+  renderReviews();
+</script>
+</body>
+</html>
